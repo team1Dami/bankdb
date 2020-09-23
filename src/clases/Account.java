@@ -6,12 +6,10 @@
 package clases;
 
 import java.io.Serializable;
-
 /**
  * @author Saray
  */
-public class Account implements Serializable{
-    
+public class Account implements Serializable{  
     /**
      * Attributes
      */
@@ -126,6 +124,5 @@ public class Account implements Serializable{
     public void setType(int type) {
         this.type = type;
     }
-    
     
 }

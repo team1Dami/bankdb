@@ -6,7 +6,6 @@
 package clases;
 
 import java.io.Serializable;
-
 /**
  *
  * @author Saray
@@ -14,7 +13,7 @@ import java.io.Serializable;
 public class Movement implements Serializable{
     
     /**
-     * 
+     * Attributes
      */
     private long movementId;
     private double amount;
@@ -23,9 +22,13 @@ public class Movement implements Serializable{
     private java.sql.Timestamp timestamp;
     private long accountId;
     
+    /**
+     * Constructor whitout params
+     */
     public Movement(){
-    }
-
+        
+    } 
+    
     /**
      * @return the movementId
      */

@@ -5,14 +5,14 @@
  */
 package clases;
 
+import java.io.Serializable;
 /**
  *
  * @author Saray
  */
-public class CustomerAccount {
-    
+public class CustomerAccount implements Serializable{
     /**
-     * 
+     * Attributes
      */
     
     private long customerId;

@@ -1,0 +1,5 @@
+DB=bankdb
+Conn=jdbc:mysql://localhost:3306/bankdb?zeroDateTimeBehavior=convertToNull [root on Default schema]
+DBUser=root
+DBPass=abcd*1234
+Driver=com.mysql.jdbc.Driver

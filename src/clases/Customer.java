@@ -6,7 +6,6 @@
 package clases;
 
 import java.io.Serializable;
-
 /**
  *
  * @author Saray
@@ -27,7 +26,7 @@ public class Customer implements Serializable{
     private String email;
     private long phone;
     private int zip;
-
+    
     /**
      * Constructor without args
      */
@@ -35,7 +34,7 @@ public class Customer implements Serializable{
     }
     
     /**
-     * Method to obtain Customer datas
+     * Method to obtain Customer data
      */
     public void getCustomerData(){
         
@@ -180,6 +179,4 @@ public class Customer implements Serializable{
     public void setZip(int zip) {
         this.zip = zip;
     }
-    
-    
 }
