@@ -7,7 +7,9 @@ package control;
 
 import clases.Customer;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.Properties;
 
 /**
  * @author Saray
@@ -19,13 +21,34 @@ public class DAO {
      */
     private Connection connection;
     private Statement statement;
-    
-    private void openConnection(){
+      
+    /**
+     * 
+     * @param customerId 
+     * @return Customer to consult the datas
+     */
+   public  Customer getCustomerData(long customerId) {
+       Customer ret = new Customer();
+       
+       try {
+           
+       }
+       catch(Exception e){
+           
+       }
         
+        return ret;
     }
-    
-    Customer getCustomerData(long customerId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   
+   private void openConnection() throws Exception {
+		
+        /*
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/bankdb?zeroDateTimeBehavior=convertToNull [root on Default schema]";
+	connection = DriverManager.getConnection(url, "root", "abcd*1234");
+	statement = connection.createStatement();       
+        */
+        
+       
     }
-    // es la que actúa como la dbManager
 }

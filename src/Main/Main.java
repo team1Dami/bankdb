@@ -18,13 +18,40 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        int option = menu();
+        int option = 0;
         
         do {
-            switch (option){
-                
-            }
+            option = menu();
             
+            switch (option){
+                case 1:
+                    createCustomer();
+                    break;
+                case 2:
+                    consultCustomerData();
+                    break;
+                case 3:
+                    consultAccounsOfAClient();
+                    break;
+                case 4:
+                    createCustomerAccount();
+                    break;
+                case 5:
+                    addCustomerToAccount();
+                    break;
+                case 6:
+                    consultDetailsOfAnAccounts();
+                    break;
+                case 7:
+                    makeMovementOnAnAccount();
+                    break;
+                case 8:
+                    consultMovementsOfAnAccount();
+                    break;
+                case 9:
+                    break;
+                    
+            }
             
         }while (option != 9);
     }
@@ -51,6 +78,61 @@ public class Main {
         ret = Util.leerInt("Choose an option: ");
         
         return ret;      
+    }
+
+    /**
+     * 
+     */
+    private static void createCustomer() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    /**
+     * 
+     */
+    private static void consultCustomerData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * 
+     */
+    private static void consultAccounsOfAClient() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * 
+     */
+    private static void createCustomerAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * 
+     */
+    private static void addCustomerToAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * 
+     */
+    private static void consultDetailsOfAnAccounts() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * 
+     */
+    private static void makeMovementOnAnAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * 
+     */
+    private static void consultMovementsOfAnAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
