@@ -37,7 +37,11 @@ public class Customer implements Serializable{
      * Method to obtain Customer data
      */
     public void getCustomerData(){
-        
+        System.out.println("Customer Data:");
+        System.out.println("Name: "+firstName+" "+lastName);
+        System.out.println("Middle Initial: "+middleInitial);
+        System.out.println("Phone and Email: "+phone+" "+email);
+        System.out.println("Address: "+street+" "+city+" "+zip+" "+state);
     }
     
     /**
@@ -179,4 +183,5 @@ public class Customer implements Serializable{
     public void setZip(int zip) {
         this.zip = zip;
     }
+
 }

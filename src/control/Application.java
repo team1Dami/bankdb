@@ -18,10 +18,10 @@ public class Application {
      * @param customerId to make the query
      * @return customer
      */
-    public Customer getCustomerData(long customerId){
+    public Customer getCustomerData(long customerId) throws Exception{
         DAO dbDao = new DAO();
         Customer ret = dbDao.getCustomerData(customerId);
-        return ret;
+        return ret; 
     }
     
     

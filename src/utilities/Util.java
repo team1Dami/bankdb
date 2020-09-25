@@ -136,7 +136,23 @@ public class Util {
 		
 		return num;
 	}
-	
+	public static  long leerLong(String mensaje) {
+		boolean blnError;
+		long num=0;
+			System.out.println(mensaje);
+		do {
+			blnError=false;
+			try {
+				num=Long.parseLong(introducirCadena());
+			}
+			catch(NumberFormatException e) {
+				System.out.println("ERROR. El dato introducido no es numérico, introduce de nuevo: ");
+				blnError=true;
+			}
+		}while(blnError);
+		
+		return num;
+	}
 	public static  float leerFloat() {
 		boolean blnError;
 		float num=0;

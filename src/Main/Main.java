@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package Main;
+import clases.Customer;
+import control.Application;
 
 import utilities.Util;
 
@@ -50,7 +52,6 @@ public class Main {
                     break;
                 case 9:
                     break;
-                    
             }
             
         }while (option != 9);
@@ -90,7 +91,18 @@ public class Main {
      * 
      */
     private static void consultCustomerData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Application app = new Application();
+       
+        try {
+            Long customerId = Util.leerLong("Introduce the id of the customer: ");
+            System.out.println("Id: "+customerId);
+            Customer customer = app.getCustomerData(customerId);
+            if(customer != null){
+               customer.getCustomerData();
+            }
+        } catch (Exception e){
+            System.out.println("An error has ocurred");
+        }
     }
 
     /**
