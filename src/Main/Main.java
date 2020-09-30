@@ -4,8 +4,11 @@
  * and open the template in the editor.
  */
 package Main;
+import clases.Account;
 import clases.Customer;
 import control.Application;
+import java.util.ArrayList;
+import javax.xml.transform.Source;
 
 import utilities.Util;
 
@@ -18,7 +21,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         int option = 0;
         
@@ -108,10 +111,15 @@ public class Main {
     /**
      * 
      */
-    private static void consultAccounsOfAClient() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static void consultAccounsOfAClient() throws Exception {
+        Application app = new Application();
+        
+        long id;
+        System.out.println("Introduce tu ID: ");
+        id=(long) Util.leerFloat();
+        ArrayList <Account> cuentas = new ArrayList<>();
+        cuentas = app.getCustomerAccount(id);
     }
-
     /**
      * 
      */

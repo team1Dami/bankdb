@@ -5,7 +5,9 @@
  */
 package control;
 
+import clases.Account;
 import clases.Customer;
+import java.util.ArrayList;
 
 /**
  * @author Saray
@@ -21,6 +23,17 @@ public class Application {
     public Customer getCustomerData(long customerId) throws Exception{
         DAO dbDao = new DAO();
         Customer ret = dbDao.getCustomerData(customerId);
+        return ret; 
+    }
+    
+     /**
+     * Method to obtain Customer data
+     * @param customerId to make the query
+     * @return customer
+     */
+    public ArrayList<Account> getCustomerAccount(long customerId) throws Exception{
+        DAO dbDao = new DAO();
+        ArrayList<Account> ret = dbDao.getCustomerAccount(customerId);
         return ret; 
     }
     
