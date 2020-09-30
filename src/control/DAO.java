@@ -6,11 +6,15 @@
 package control;
 
 import clases.Customer;
+import clases.CustomerAccount;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * @author Saray
@@ -20,9 +24,35 @@ public class DAO {
     /**
      * Attributes
      */
-    private Connection connection;
-    private Statement statement;
+  //  static Connection = new Connection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
+    private Connection conn = null;
+ //   private Properties properties;
+    private PreparedStatement preparedStmt = null;
+    private Statement statement = null;
+    
+    /**
+     * getting the properties file datas
+     */
+    private ResourceBundle configFile;
+    private String driverDB;
+    private String urlDB;
+    private String userDB;
+    private String passwordDB;
+
+    /**
+     * 
+     * @throws Exception 
+     */
+    public DAO() throws Exception {
+      this.configFile = ResourceBundle.getBundle("control.configFile");
+      this.driverDB = this.configFile.getString("Driver");
+      this.urlDB = this.configFile.getString("Conn");
+      this.userDB = this.configFile.getString("DBUser");
+      this.passwordDB = this.configFile.getString("DBPass");
       
+      //  System.out.println(urlDB+" "+userDB+" "+passwordDB+" "+driverDB);  
+    }
+    
     /**
      * 
      * @param customerId 
@@ -30,27 +60,30 @@ public class DAO {
      */
    public  Customer getCustomerData(long customerId){
        Customer ret = new Customer();
+       ResultSet resultset = null;
+       PreparedStatement preparedStmt = null;
        try{
-            this.openConnection();
-            
-            statement = connection.createStatement();
-            
+          
+           this.openConnection();         
             String select = "select * from customer where id = "+customerId+"";
-            ResultSet resultSet = statement.executeQuery(select);
+            preparedStmt = conn.prepareStatement(select);
+         
+         ResultSet resultSet = preparedStmt.executeQuery(select);
 		
 		while(resultSet.next()) {
                     ret.setCustomerId(customerId);
                     ret.setFirstName(resultSet.getString("firstName"));
                     ret.setLastName(resultSet.getString("lastName"));
                     ret.setEmail(resultSet.getString("email"));
-                        ret.setCity(resultSet.getString("city"));
-                        ret.setMiddleInitial(resultSet.getString("middleInitial"));
-                        ret.setPhone(resultSet.getLong("phone"));
-                        ret.setState(resultSet.getString("state"));
-                        ret.setStreet(resultSet.getString("street"));
-                        ret.setZip(resultSet.getInt("zip"));
+                    ret.setCity(resultSet.getString("city"));
+                    ret.setMiddleInitial(resultSet.getString("middleInitial"));
+                    ret.setPhone(resultSet.getLong("phone"));
+                    ret.setState(resultSet.getString("state"));
+                    ret.setStreet(resultSet.getString("street"));
+                    ret.setZip(resultSet.getInt("zip"));
 		}
 		resultSet.close();
+                preparedStmt.close();
             
             this.closeConnection();   
        }
@@ -58,25 +91,48 @@ public class DAO {
             System.out.println("Customer can not found or doesn't exist");
        }
        catch(Exception e){
-            System.out.println("No se ha podido establecer conexión con la base de datos");
-       }    
-        
-      
+            System.out.println("DB Connection failed");
+       }             
        return ret;
     }
    
-   private void openConnection() throws Exception {
-	
-        //Class.forName("com.mysql.cj.jdbc.Driver");
-        String path = "jdbc:mysql://localhost:3306/bankdb";
-	connection = DriverManager.getConnection(path, "root", "abcd*1234");
+    boolean setCustomerAccount(Long customerId) {
+       CustomerAccount ret = new CustomerAccount();
+       ResultSet resultset = null;
+       PreparedStatement preparedStmt = null;
+       boolean blnCreated = false;
+       
+       try{
+          
+           this.openConnection();         
+            String insert = "select * from customer where id = "+customerId+"";
+            preparedStmt = conn.prepareStatement(insert);
+         
+         ResultSet resultSet = preparedStmt.executeQuery(insert);
       
+            
+        }catch (SQLException sqlE) {
+            System.out.println("Insert failed");
+        }
+        return blnCreated;
+    }
+   private void openConnection()   {
+       
+       try {
+      //  Class.forName(driverDB);
+  //      conn = DriverManager.getConnection(urlDB, userDB, passwordDB);
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
+    
+       }
+       catch (Exception e){
+           System.out.println("No Connec");
+       }
     }
    
-   private void closeConnection() throws SQLException {
-	statement.close();
-	connection.close();
-        
-        System.out.println("Connection has been closed");
+   private void closeConnection() throws SQLException {  
+	conn.close();     
     }
+
+    
+  
 }
