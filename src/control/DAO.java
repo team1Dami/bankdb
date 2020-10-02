@@ -74,13 +74,14 @@ public class DAO {
             
             statement = connection.createStatement();
             //SELECTS
-            String select = "select accounts_id from customer_account where customers_id = "+customerId+"";
+            String select = "select * from customer_account where customers_id = "+customerId+"";
             ResultSet resultSet = statement.executeQuery(select);
-            
+            System.out.println("Estoy buscando");
             //Variables 
             ArrayList <Long> ids = new ArrayList();
             Account cuenta = null;
             long account_id;
+            System.out.println("Esoy a punto de el while");
 		while(customerId == resultSet.getLong("customers_id") && resultSet.next()) {
                     ids.add(resultSet.getLong("accounts_id"));
 		}
