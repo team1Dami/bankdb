@@ -129,8 +129,7 @@ public class DAO {
    private void openConnection()   {
        
        try {
-      //  Class.forName(driverDB);
-  //      conn = DriverManager.getConnection(urlDB, userDB, passwordDB);
+      
         conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
     
        }
