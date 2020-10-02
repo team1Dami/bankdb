@@ -5,6 +5,7 @@
  */
 package control;
 
+import clases.Account;
 import clases.Customer;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -78,5 +79,39 @@ public class DAO {
 	connection.close();
         
         System.out.println("Connection has been closed");
+    }
+
+    Account getAccountData(long AccountId) {
+        Account ret = new Account();
+       try{
+            this.openConnection();
+            
+            statement = connection.createStatement();
+            
+            String select = "select * from Account where id = "+AccountId+"";
+            ResultSet resultSet = statement.executeQuery(select);
+		
+		while(resultSet.next()) {
+                    ret.setAccountId(AccountId);
+                    ret.setBalance(resultSet.getFloat("balance"));
+                    ret.setBeginBalance(resultSet.getFloat("beginBalance"));
+                    ret.setBeginBalanceTimestamp(resultSet.getFloat("beginBalanceTimestamp"));
+                    ret.setCreditLine(resultSet.getDouble("creditLine"));
+                    ret.setDescription(resultSet.getString("description"));
+                    ret.setType(resultSet.getInt("type"));
+		}
+		resultSet.close();
+            
+            this.closeConnection();   
+       }
+       catch(SQLException sqlE){
+            System.out.println("Account can not found or doesn't exist");
+       }
+       catch(Exception e){
+            System.out.println("No se ha podido establecer conexión con la base de datos");
+       }    
+        
+      
+       return ret;
     }
 }

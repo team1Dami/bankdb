@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Main;
+import clases.Account;
 import clases.Customer;
 import control.Application;
 
@@ -124,13 +125,27 @@ public class Main {
      */
     private static void addCustomerToAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        
+        
     }
 
     /**
      * 
      */
     private static void consultDetailsOfAnAccounts() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        Application app = new Application();
+        try {
+            Long accountId = Util.leerLong("Introduce the id of the account: ");
+            System.out.println("Id: "+accountId);
+            Account account = app.getAccountData(accountId);
+            if(account != null){
+               account.getAccountData();
+            }
+        } catch (Exception e){
+            System.out.println("An error has ocurred");
+        }
     }
 
     /**

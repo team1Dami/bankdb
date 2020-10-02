@@ -6,6 +6,7 @@
 package clases;
 
 import java.io.Serializable;
+import utilities.Util;
 /**
  *
  * @author Saray
@@ -36,6 +37,20 @@ public class Customer implements Serializable{
     /**
      * Method to obtain Customer data
      */
+         public void setDatos(){
+         firstName = Util.introducirCadena("Introduce tu primer nombre: ");
+         lastName = Util.introducirCadena("Introduce tu ultimo nombre: ");
+         customerId = (long) Util.leerFloat("Introduce tu id de cliente: ");
+         middleInitial= Util.introducirCadena("Introduce tu middleintial: ");
+         street = Util.introducirCadena("Introduce la calle: ");
+         city = Util.introducirCadena("Introduce la ciudad: ");
+         state = Util.introducirCadena("Introduce el estado: ");
+         zip = Util.leerInt("Introduce tu zip: ");
+         phone = (long) Util.leerFloat("Introduce tu numero de telefono: ");
+         email = Util.introducirCadena("Introduce tu email: ");
+    
+     
+     }
     public void getCustomerData(){
         System.out.println("Customer Data:");
         System.out.println("Name: "+firstName+" "+lastName);
