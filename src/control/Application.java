@@ -7,6 +7,7 @@ package control;
 
 import clases.Account;
 import clases.Customer;
+import clases.Movement;
 
 /**
  * @author Saray
@@ -29,6 +30,11 @@ public class Application {
         Account ret = dbDao.getAccountData(AccountId);
         return ret; 
     }
+     public void createMovement(long accountId) throws Exception{
+         System.out.println("Estoy en elaplication");
+         DAO dbDao = new DAO();
+        dbDao.createMovement(accountId);
+     }
     
     
     

@@ -6,6 +6,7 @@
 package Main;
 import clases.Account;
 import clases.Customer;
+import clases.Movement;
 import control.Application;
 
 import utilities.Util;
@@ -152,7 +153,15 @@ public class Main {
      * 
      */
     private static void makeMovementOnAnAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Application app = new Application();
+        try {
+            Long accountId = Util.leerLong("Introduce the id of the account: ");
+            System.out.println("Id: "+accountId);
+            app.createMovement(accountId);
+ 
+        } catch (Exception e){
+            System.out.println("An error has ocurred");
+        }
     }
 
     /**

@@ -6,6 +6,8 @@
 package clases;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import utilities.Util;
 /**
  *
  * @author Saray
@@ -28,6 +30,17 @@ public class Movement implements Serializable{
     public Movement(){
         
     } 
+    public void setDatos(long accountIid){
+        movementId = (long) Util.leerFloat("Introduce el id del movimiento: ");
+        System.out.println("Introduce la cantidad: ");
+        amount = Util.leerDouble();
+         System.out.println("Introduce el balance: ");
+        balance = Util.leerDouble();
+        description = Util.introducirCadena("Introduce una descripcion: ");
+        timestamp = new Timestamp(System.currentTimeMillis());
+        accountId = accountIid;
+        
+    }
     
     /**
      * @return the movementId
