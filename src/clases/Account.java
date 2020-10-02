@@ -26,7 +26,12 @@ public class Account implements Serializable{
      */
     public Account(){
     }
-
+    
+    public void setAccountData(){
+        accountId = 0;
+    }
+    
+    
     /**
      * @return the accountId
      */
@@ -124,5 +129,7 @@ public class Account implements Serializable{
     public void setType(int type) {
         this.type = type;
     }
+
+    
     
 }

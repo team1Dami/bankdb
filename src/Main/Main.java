@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package Main;
+import clases.Account;
 import clases.Customer;
+import clases.CustomerAccount;
 import control.Application;
 
 import utilities.Util;
@@ -66,10 +68,10 @@ public class Main {
         int ret = 0;
         
         System.out.println("- - - - - - - M E N U - - - - - - -");
-        System.out.println("1- Create	customer");
+        System.out.println("1- Create customer");
         System.out.println("2- Consult customer data");
         System.out.println("3- Consult accounts of a client");
-        System.out.println("4- Create	customer account");
+        System.out.println("4- Create customer account");
         System.out.println("5- Add customer to account");
         System.out.println("6- Consult details of an account");
         System.out.println("7- Make movement on an account");
@@ -91,23 +93,24 @@ public class Main {
      * 
      */
     private static void consultCustomerData() {
+       
         Application app = new Application();
        
         try {
             Long customerId = Util.leerLong("Introduce the id of the customer: ");
             System.out.println("Id: "+customerId);
-            Customer customer = app.getCustomerData(customerId);
-            if(customer != null){
+            Customer customer = new Customer();
+            customer = app.getCustomerData(customerId);
+            if(customer.getCustomerId() != 0){
                customer.getCustomerData();
             }
         } catch (Exception e){
             System.out.println("An error has ocurred");
         }
     }
-
     /**
-     * 
-     */
+        * 
+        */
     private static void consultAccounsOfAClient() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -116,7 +119,24 @@ public class Main {
      * 
      */
     private static void createCustomerAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Application app = new Application();
+       
+        try {
+            Long customerId = Util.leerLong("Introduce the id of the customer: ");
+            System.out.println("Id: "+customerId);
+            Account account = new Account();
+            CustomerAccount customerAccount = new CustomerAccount();
+            
+            // comprobamos si el cliente existe:
+            
+            if(app.getCustomerId(customerId)){
+                
+            }
+           
+           
+        } catch (Exception e){
+            System.out.println("An error has ocurred");
+        }
     }
 
     /**

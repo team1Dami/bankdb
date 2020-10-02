@@ -96,25 +96,28 @@ public class DAO {
        return ret;
     }
    
-    boolean setCustomerAccount(Long customerId) {
+    public boolean getCustomerId(Long customerId) {
        CustomerAccount ret = new CustomerAccount();
        ResultSet resultset = null;
        PreparedStatement preparedStmt = null;
-       boolean blnCreated = false;
+       boolean blnExist = false;
        
        try{
-          
            this.openConnection();         
-            String insert = "select * from customer where id = "+customerId+"";
-            preparedStmt = conn.prepareStatement(insert);
+            String select = "select id from customer where id = "+customerId+"";
+            preparedStmt = conn.prepareStatement(select);
          
-         ResultSet resultSet = preparedStmt.executeQuery(insert);
-      
+            ResultSet resultSet = preparedStmt.executeQuery(select);
+            
+            while(resultSet.next()){
+                blnExist = true;
+            }
+            
             
         }catch (SQLException sqlE) {
-            System.out.println("Insert failed");
+            System.out.println("no exist");
         }
-        return blnCreated;
+        return blnExist;
     }
    private void openConnection()   {
        

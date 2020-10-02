@@ -6,6 +6,7 @@
 package control;
 
 import clases.Customer;
+import clases.CustomerAccount;
 
 /**
  * @author Saray
@@ -20,8 +21,15 @@ public class Application {
      */
     public Customer getCustomerData(long customerId) throws Exception{
         DAO dbDao = new DAO();
+        
         Customer ret = dbDao.getCustomerData(customerId);
+        
         return ret; 
+    }
+
+    public boolean getCustomerId(Long customerId) throws Exception{
+        DAO dbDao = new DAO();
+        return dbDao.getCustomerId(customerId);
     }
     
     
