@@ -100,7 +100,6 @@ public class Main {
        
         try {
             Long customerId = Util.leerLong("Introduce the id of the customer: ");
-            System.out.println("Id: "+customerId);
             Customer customer = new Customer();
             customer = app.getCustomerData(customerId);
             if(customer.getCustomerId() != 0){

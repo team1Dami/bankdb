@@ -7,14 +7,13 @@ package control;
 
 import clases.Account;
 import clases.Customer;
-import clases.CustomerAccount;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 /**
@@ -48,7 +47,6 @@ public class DAO {
       this.urlDB = this.configFile.getString("Conn");
       this.userDB = this.configFile.getString("DBUser");
       this.passwordDB = this.configFile.getString("DBPass");
-      
       //  System.out.println(urlDB+" "+userDB+" "+passwordDB+" "+driverDB);  
     }
     
@@ -99,7 +97,7 @@ public class DAO {
     * @param customerId
     * @return true if exist or false if doesn't exist
     */
-    public boolean getCustomerId(Long customerId) {
+    public boolean getCustomerId(Long customerId) throws ClassNotFoundException {
    
        boolean blnExist = false;
        
@@ -126,37 +124,48 @@ public class DAO {
        
         return blnExist;
     }
-   private void openConnection()   {
-       
+    /**
+     * 
+     */
+   private void openConnection() throws ClassNotFoundException   {
        try {
-      
+       //Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
-    
        }
-       catch (Exception e){
+       catch (SQLException e){
            System.out.println("No Connec");
        }
     }
-   
+   /**
+    * 
+    * @throws SQLException 
+    */
    private void closeConnection() throws SQLException {  
 	conn.close();     
     }
 
     void setAccount(Long customerId, Account account) {
        
-       ResultSet resultset = null;
        PreparedStatement preparedStmt = null;
        
-       try{
-           
-           this.openConnection();  
-           
-            String insert = "insert into account (id, balance, beginBalance, beginBalanceTimestamp, creditLine, description, type) values ("+account.getAccountId()+", "+account.getBalance()+","+account.getBeginBalance()+", "+account.getBeginBalanceTimestamp()+", "+account.getCreditLine()+", '"+account.getDescription()+"',"+account.getType()+"); ";
-            preparedStmt.executeUpdate(insert);
-           
-         this.closeConnection();
+        try{
+            this.openConnection(); 
+            
+            preparedStmt = conn.prepareStatement("INSERT INTO account VALUES (?,?,?,?,?,?,?)");
+            preparedStmt.setLong(1, account.getAccountId());
+            preparedStmt.setFloat(2, account.getBalance());
+            preparedStmt.setFloat(3, account.getBeginBalance());
+            preparedStmt.setTimestamp(4, account.getBeginBalanceTimestamp());
+            preparedStmt.setDouble(5, account.getCreditLine());
+            preparedStmt.setString(6, account.getDescription());
+            preparedStmt.setInt(7, account.getType());
+            
+            preparedStmt.executeUpdate();
+            
+            preparedStmt.close();
+            this.closeConnection();
          
-        }catch (SQLException sqlE) {
+        } catch (SQLException sqlE) {
             System.out.println("insert failed");
         } catch (Exception e){
             System.out.println("");

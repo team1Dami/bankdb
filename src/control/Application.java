@@ -19,20 +19,29 @@ public class Application {
      * Method to obtain Customer data
      * @param customerId to make the query
      * @return customer
+     * @throws java.lang.Exception
      */
     public Customer getCustomerData(long customerId) throws Exception{
         DAO dbDao = new DAO();
-        
-        Customer ret = dbDao.getCustomerData(customerId);
-        
+        Customer ret = dbDao.getCustomerData(customerId); 
         return ret; 
     }
-
+    /**
+     * 
+     * @param customerId
+     * @return
+     * @throws Exception 
+     */
     public boolean getCustomerId(Long customerId) throws Exception{
         DAO dbDao = new DAO();
         return dbDao.getCustomerId(customerId);
     }
-    
+    /**
+     * 
+     * @param customerId
+     * @param account
+     * @throws Exception 
+     */
     public void setAccount(Long customerId, Account account) throws Exception {
         DAO dbDao = new DAO();
         
