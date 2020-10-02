@@ -8,6 +8,7 @@ package control;
 import clases.Customer;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,8 +23,9 @@ public class DAO {
     /**
      * Attributes
      */
-    private Connection connection;
+    private Connection conn;
     private Statement statement;
+    private PreparedStatement preparedStmt = null;
       
     /**
      * 
@@ -35,7 +37,7 @@ public class DAO {
        try{
             this.openConnection();
             
-            statement = connection.createStatement();
+            statement = conn.createStatement();
             
             String select = "select * from customer where id = "+customerId+"";
             ResultSet resultSet = statement.executeQuery(select);
@@ -67,52 +69,56 @@ public class DAO {
        return ret;
     }
    
-   private void openConnection() throws Exception {
-	
-        //Class.forName("com.mysql.cj.jdbc.Driver");
-        String path = "jdbc:mysql://localhost:3306/bankdb";
-	connection = DriverManager.getConnection(path, "root", "abcd*1234");
+   private void openConnection()   {
+       
+       try {
       
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
+    
+       }
+       catch (Exception e){
+           System.out.println("No Connec");
+       }
     }
    
-   private void closeConnection() throws SQLException {
-	statement.close();
-	connection.close();
-        
-        System.out.println("Connection has been closed");
-    }  
+   private void closeConnection() throws SQLException {  
+	conn.close();     
+    }
    
    
    
-    public boolean findCustomerID( Customer cus) throws Exception{
-        boolean esta=false;
-		 this.openConnection();
-            
-            statement = connection.createStatement();
-            
-            String select = "select * from customer";
-            ResultSet rs = statement.executeQuery(select);
-            long id = 0;
-            while (rs.next()) {
-                System.out.println(rs.getLong("id"));
-                id = rs.getLong("id");
-                if(cus.getCustomerId() == id){
-                    esta=true;
+    public boolean getCustomerId(Long customerId) {
+       PreparedStatement preparedStmt = null;
+       boolean blnExist = false;
+       
+       try{
+           this.openConnection();         
+            String select = "select id from customer where id = "+customerId+";";
+            preparedStmt = conn.prepareStatement(select);
+         
+            ResultSet resultSet = preparedStmt.executeQuery(select);
+           
+            while (resultSet.next()) {              
+                if(customerId == resultSet.getLong("id")){
+                    blnExist=true;
                 }
             }
-            
-                if(esta){
-                    System.out.println("Esa ID ya esta incluida");
-                }else{
-                    System.out.println("No esta");
-                   //statement.execute(insert);
-                }
-                rs.close();
-                statement.close();
-                
-        this.closeConnection();
-        return esta;
+         
+         resultSet.close();
+         preparedStmt.close();
+         
+         this.closeConnection();
+        }catch (SQLException sqlE) {
+            System.out.println("no exist");
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        return blnExist;
     }
+
+
+
 
     void createCustomer(Customer cus) {
         try {

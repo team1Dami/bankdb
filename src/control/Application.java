@@ -26,7 +26,7 @@ public class Application {
     
     public void setCustomer(Customer cust) throws Exception{
         DAO dbDao = new DAO();
-        boolean esta=dbDao.findCustomerID(cust);
+        boolean esta=dbDao.getCustomerId(cust.getCustomerId());
         if(!esta)
         dbDao.createCustomer(cust);
     }

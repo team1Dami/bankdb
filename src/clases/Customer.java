@@ -190,13 +190,13 @@ public class Customer implements Serializable{
     }
 
     public void setDatos() {
-        customerId = (long) Util.leerFloat("Introduce tu id de cliente: ");
+        customerId = Util.leerLong("Introduce tu id de cliente: ");
         firstName = Util.introducirCadena("Introduce tu primer nombre: ");
         lastName = Util.introducirCadena("Introduce tu ultimo nombre: ");
         middleInitial= Util.introducirCadena("Introduce tu middleintial: ");
         street = Util.introducirCadena("Introduce la calle: ");
         city = Util.introducirCadena("Introduce la ciudad: ");
-        phone = (long) Util.leerFloat("Introduce tu telefono ");
+        phone = Util.leerLong("Introduce tu telefono ");
         zip = Util.leerInt("Introduce tu zip");
         email =Util.introducirCadena("Introduce email");
          
