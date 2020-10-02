@@ -12,8 +12,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 /**
@@ -24,7 +22,6 @@ public class DAO {
     /**
      * Attributes
      */
-  //  static Connection = new Connection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
     private Connection conn = null;
     private PreparedStatement preparedStmt = null;
     
@@ -36,7 +33,6 @@ public class DAO {
     private String urlDB;
     private String userDB;
     private String passwordDB;
-
     /**
      * 
      * @throws Exception 
@@ -46,8 +42,7 @@ public class DAO {
       this.driverDB = this.configFile.getString("Driver");
       this.urlDB = this.configFile.getString("Conn");
       this.userDB = this.configFile.getString("DBUser");
-      this.passwordDB = this.configFile.getString("DBPass");
-      //  System.out.println(urlDB+" "+userDB+" "+passwordDB+" "+driverDB);  
+      this.passwordDB = this.configFile.getString("DBPass"); 
     }
     
     /**
@@ -59,6 +54,7 @@ public class DAO {
        Customer ret = new Customer();
        ResultSet resultset = null;
        PreparedStatement preparedStmt = null;
+       
        try{
           
            this.openConnection();         
@@ -97,7 +93,7 @@ public class DAO {
     * @param customerId
     * @return true if exist or false if doesn't exist
     */
-    public boolean getCustomerId(Long customerId) throws ClassNotFoundException {
+    public boolean getCustomerId(Long customerId) throws Exception{
    
        boolean blnExist = false;
        
@@ -127,20 +123,22 @@ public class DAO {
     /**
      * 
      */
-   private void openConnection() throws ClassNotFoundException   {
+    private void openConnection()   {
+       
        try {
-       //Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("com.mysql.jdbc.Driver");
         conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
+    
        }
-       catch (SQLException e){
+       catch (Exception e){
            System.out.println("No Connec");
        }
     }
-   /**
-    * 
-    * @throws SQLException 
-    */
-   private void closeConnection() throws SQLException {  
+    /**
+     * 
+     * @throws SQLException 
+     */
+    private void closeConnection() throws SQLException {  
 	conn.close();     
     }
 
