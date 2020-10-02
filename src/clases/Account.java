@@ -16,7 +16,7 @@ public class Account implements Serializable{
     private long accountId;
     private float balance;
     private float beginBalance;
-    private float beginBalanceTimestamp;
+    private java.sql.Timestamp beginBalanceTimestamp;
     private double creditLine;
     private String description;
     private int type;   // standard or credit 
@@ -77,14 +77,14 @@ public class Account implements Serializable{
     /**
      * @return the beginBalanceTimestamp
      */
-    public float getBeginBalanceTimestamp() {
+    public java.sql.Timestamp getBeginBalanceTimestamp() {
         return beginBalanceTimestamp;
     }
 
     /**
      * @param beginBalanceTimestamp the beginBalanceTimestamp to set
      */
-    public void setBeginBalanceTimestamp(float beginBalanceTimestamp) {
+    public void setBeginBalanceTimestamp(java.sql.Timestamp beginBalanceTimestamp) {
         this.beginBalanceTimestamp = beginBalanceTimestamp;
     }
 

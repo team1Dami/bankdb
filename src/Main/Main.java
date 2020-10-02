@@ -8,6 +8,8 @@ import clases.Account;
 import clases.Customer;
 import clases.CustomerAccount;
 import control.Application;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 import utilities.Util;
 
@@ -123,27 +125,49 @@ public class Main {
        
         try {
             Long customerId = Util.leerLong("Introduce the id of the customer: ");
-            System.out.println("Id: "+customerId);
-            Account account = new Account();
-            CustomerAccount customerAccount = new CustomerAccount();
-            
-            // comprobamos si el cliente existe:
-            
-            if(app.getCustomerId(customerId)){
+             if(app.getCustomerId(customerId)){  // comprobamos si el cliente existe:
                 
-            }
-           
+                Account newAccount = new Account();
+       
+                newAccount.setAccountId(createAccountId());
+                System.out.println(newAccount.getAccountId());
+                newAccount.setBalance(Util.leerFloat("Introduce de balance of the account"));
+                newAccount.setBeginBalance(newAccount.getBalance());
+                java.sql.Timestamp today = java.sql.Timestamp.valueOf(LocalDateTime.now());
+                newAccount.setBeginBalanceTimestamp(today);
+                newAccount.setCreditLine(Util.leerDouble("Introduce the credit line: "));
+                newAccount.setDescription(Util.introducirCadena("Introduce the description: "));
+                newAccount.setType(Util.leerInt("Select 0 (whithout credit) or 1 (whit credit): ", 0, 1));
+               
+                app.setAccount(customerId, newAccount);
+                
+                CustomerAccount customerAccount = new CustomerAccount();
+            } else {
+                 System.out.println("The id of the client doesn't exist");
+             }
+          
            
         } catch (Exception e){
             System.out.println("An error has ocurred");
         }
     }
-
+    
+    /**
+     * 
+     */
+    private static long createAccountId() {
+        Long accountId = null;
+        
+        accountId = new Random().nextLong();
+        
+        return accountId;
+    }
     /**
      * 
      */
     private static void addCustomerToAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        
     }
 
     /**
@@ -166,5 +190,7 @@ public class Main {
     private static void consultMovementsOfAnAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
     
 }

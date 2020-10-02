@@ -5,6 +5,7 @@
  */
 package control;
 
+import clases.Account;
 import clases.Customer;
 import clases.CustomerAccount;
 
@@ -32,5 +33,10 @@ public class Application {
         return dbDao.getCustomerId(customerId);
     }
     
+    public void setAccount(Long customerId, Account account) throws Exception {
+        DAO dbDao = new DAO();
+        
+        dbDao.setAccount(customerId, account);
+    }
     
 }

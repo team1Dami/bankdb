@@ -5,6 +5,7 @@
  */
 package control;
 
+import clases.Account;
 import clases.Customer;
 import clases.CustomerAccount;
 import java.sql.Connection;
@@ -26,9 +27,7 @@ public class DAO {
      */
   //  static Connection = new Connection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
     private Connection conn = null;
- //   private Properties properties;
     private PreparedStatement preparedStmt = null;
-    private Statement statement = null;
     
     /**
      * getting the properties file datas
@@ -95,11 +94,13 @@ public class DAO {
        }             
        return ret;
     }
-   
+   /**
+    * 
+    * @param customerId
+    * @return true if exist or false if doesn't exist
+    */
     public boolean getCustomerId(Long customerId) {
-       CustomerAccount ret = new CustomerAccount();
-       ResultSet resultset = null;
-       PreparedStatement preparedStmt = null;
+   
        boolean blnExist = false;
        
        try{
@@ -108,15 +109,21 @@ public class DAO {
             preparedStmt = conn.prepareStatement(select);
          
             ResultSet resultSet = preparedStmt.executeQuery(select);
-            
-            while(resultSet.next()){
-                blnExist = true;
+           
+            while (resultSet.next()) {              
+                if(customerId == resultSet.getLong("id")){
+                    blnExist=true;
+                }
             }
-            
-            
+         
+         resultSet.close();
+         preparedStmt.close();
+         
+         this.closeConnection();
         }catch (SQLException sqlE) {
             System.out.println("no exist");
         }
+       
         return blnExist;
     }
    private void openConnection()   {
@@ -135,6 +142,28 @@ public class DAO {
    private void closeConnection() throws SQLException {  
 	conn.close();     
     }
+
+    void setAccount(Long customerId, Account account) {
+       
+       ResultSet resultset = null;
+       PreparedStatement preparedStmt = null;
+       
+       try{
+           
+           this.openConnection();  
+           
+            String insert = "insert into account (id, balance, beginBalance, beginBalanceTimestamp, creditLine, description, type) values ("+account.getAccountId()+", "+account.getBalance()+","+account.getBeginBalance()+", "+account.getBeginBalanceTimestamp()+", "+account.getCreditLine()+", '"+account.getDescription()+"',"+account.getType()+"); ";
+            preparedStmt.executeUpdate(insert);
+           
+         this.closeConnection();
+         
+        }catch (SQLException sqlE) {
+            System.out.println("insert failed");
+        } catch (Exception e){
+            System.out.println("");
+        }
+       
+ }
 
     
   
