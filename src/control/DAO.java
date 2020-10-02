@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Saray
@@ -78,5 +80,56 @@ public class DAO {
 	connection.close();
         
         System.out.println("Connection has been closed");
+    }  
+   
+   
+   
+    public boolean findCustomerID( Customer cus) throws Exception{
+        boolean esta=false;
+		 this.openConnection();
+            
+            statement = connection.createStatement();
+            
+            String select = "select * from customer";
+            ResultSet rs = statement.executeQuery(select);
+            long id = 0;
+            while (rs.next()) {
+                System.out.println(rs.getLong("id"));
+                id = rs.getLong("id");
+                if(cus.getCustomerId() == id){
+                    esta=true;
+                }
+            }
+            
+                if(esta){
+                    System.out.println("Esa ID ya esta incluida");
+                }else{
+                    System.out.println("No esta");
+                   //statement.execute(insert);
+                }
+                rs.close();
+                statement.close();
+                
+        this.closeConnection();
+        return esta;
     }
+
+    void createCustomer(Customer cus) {
+        try {
+            this.openConnection();
+            
+            String insert = "insert into customer values("+cus.getCustomerId()+",'"+cus.getCity()+"','"+cus.getEmail()+
+                            "','"+cus.getFirstName()+"','"+cus.getLastName()+"','"+cus.getMiddleInitial()+"',"+
+                            cus.getPhone()+",'"+cus.getState()+"','"+cus.getStreet()+"',"+
+                            cus.getZip()+")";
+            statement.executeUpdate(insert);
+            
+        this.closeConnection();
+        } catch (SQLException ex) {
+            System.out.println("Insert fallida");
+        } catch (Exception ex) {
+            System.out.println("Conexion fallida");
+        }
+    }
+
 }

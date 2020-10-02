@@ -24,5 +24,12 @@ public class Application {
         return ret; 
     }
     
+    public void setCustomer(Customer cust) throws Exception{
+        DAO dbDao = new DAO();
+        boolean esta=dbDao.findCustomerID(cust);
+        if(!esta)
+        dbDao.createCustomer(cust);
+    }
+    
     
 }

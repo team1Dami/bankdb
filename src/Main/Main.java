@@ -6,6 +6,7 @@
 package Main;
 import clases.Customer;
 import control.Application;
+import control.DAO;
 
 import utilities.Util;
 
@@ -18,7 +19,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         int option = 0;
         
@@ -33,7 +34,7 @@ public class Main {
                     consultCustomerData();
                     break;
                 case 3:
-                    consultAccounsOfAClient();
+                    //consultAccounsOfAClient();
                     break;
                 case 4:
                     createCustomerAccount();
@@ -84,12 +85,15 @@ public class Main {
     /**
      * 
      */
-    private static void createCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static void createCustomer()throws Exception {
+       Application app=new Application();
+       Customer cust =new Customer();
+       cust.setDatos();
+       app.setCustomer(cust);
     }
-    /**
-     * 
-     */
+
+
+
     private static void consultCustomerData() {
         Application app = new Application();
        
@@ -107,10 +111,7 @@ public class Main {
 
     /**
      * 
-     */
-    private static void consultAccounsOfAClient() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+     
 
     /**
      * 
