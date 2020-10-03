@@ -100,6 +100,7 @@ public class DAO {
            
             while (resultSet.next()) {              
                 if(customerId == resultSet.getLong("id")){
+                    System.out.println("El id introducido ya esta registrado");
                     blnExist=true;
                 }
             }
@@ -121,14 +122,29 @@ public class DAO {
 
 
     void createCustomer(Customer cus) {
+        PreparedStatement preparedStmt = null;
         try {
             this.openConnection();
             
-            String insert = "insert into customer values("+cus.getCustomerId()+",'"+cus.getCity()+"','"+cus.getEmail()+
+           /*String insert = "insert into customer values("+cus.getCustomerId()+",'"+cus.getCity()+"','"+cus.getEmail()+
                             "','"+cus.getFirstName()+"','"+cus.getLastName()+"','"+cus.getMiddleInitial()+"',"+
                             cus.getPhone()+",'"+cus.getState()+"','"+cus.getStreet()+"',"+
                             cus.getZip()+")";
-            statement.executeUpdate(insert);
+            statement.executeUpdate(insert);*/
+           preparedStmt = conn.prepareStatement("INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?,?)");
+            preparedStmt.setLong(1, cus.getCustomerId());
+            preparedStmt.setString(2, cus.getCity());
+            preparedStmt.setString(3, cus.getEmail());
+            preparedStmt.setString(4,cus.getFirstName());
+            preparedStmt.setString(5, cus.getLastName());
+            preparedStmt.setString(6, cus.getMiddleInitial());
+            preparedStmt.setFloat(7, cus.getPhone());
+            preparedStmt.setString(8, cus.getState());
+            preparedStmt.setString(9, cus.getStreet());
+            preparedStmt.setFloat(10, cus.getZip());
+            preparedStmt.executeUpdate();
+            
+            preparedStmt.close();
             
         this.closeConnection();
         } catch (SQLException ex) {
