@@ -87,7 +87,7 @@ public class DAO {
    
    
    
-    public boolean getCustomerId(Long customerId) {
+    public boolean getCustomerId(long customerId) {
        PreparedStatement preparedStmt = null;
        boolean blnExist = false;
        
@@ -154,4 +154,60 @@ public class DAO {
         }
     }
 
+    public boolean getAccountId(Long accId){
+        PreparedStatement preparedStmt = null;
+       boolean blnExist = false;
+       
+       try{
+           this.openConnection();         
+            String select = "select id from account where id = "+accId+";";
+            preparedStmt = conn.prepareStatement(select);
+         
+            ResultSet resultSet = preparedStmt.executeQuery(select);
+           
+            while (resultSet.next()) {              
+                if(accId == resultSet.getLong("id")){
+                    System.out.println("El id introducido ya esta registrado");
+                    blnExist=true;
+                }
+            }
+         
+         resultSet.close();
+         preparedStmt.close();
+         
+         this.closeConnection();
+        }catch (SQLException sqlE) {
+            System.out.println("no exist");
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        return blnExist;
+    }
+    
+    public void setCustomerAccount(long customerId, long accountId){
+          PreparedStatement preparedStmt = null;
+        try {
+            this.openConnection();
+            
+           /*String insert = "insert into customer values("+cus.getCustomerId()+",'"+cus.getCity()+"','"+cus.getEmail()+
+                            "','"+cus.getFirstName()+"','"+cus.getLastName()+"','"+cus.getMiddleInitial()+"',"+
+                            cus.getPhone()+",'"+cus.getState()+"','"+cus.getStreet()+"',"+
+                            cus.getZip()+")";
+            statement.executeUpdate(insert);*/
+           preparedStmt = conn.prepareStatement("INSERT INTO customer_account VALUES (?,?)");
+            preparedStmt.setLong(1, customerId);
+            preparedStmt.setLong(2, accountId);
+            
+            preparedStmt.executeUpdate();
+            
+            preparedStmt.close();
+            
+        this.closeConnection();
+        } catch (SQLException ex) {
+            System.out.println("Insert fallida");
+        } catch (Exception ex) {
+            System.out.println("Conexion fallida");
+        }
+    }
 }

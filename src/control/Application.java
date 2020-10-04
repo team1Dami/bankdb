@@ -31,5 +31,16 @@ public class Application {
         dbDao.createCustomer(cust);
     }
     
+    public void setAccountCustomer(long cusId, long accId){
+        DAO dbDao = new DAO();
+        boolean customerId=dbDao.getCustomerId(cusId);
+        boolean accountId=dbDao.getAccountId(accId);
+        if(accountId&&customerId){
+            dbDao.setCustomerAccount(cusId,accId);
+        }
+        else{
+            System.out.println("No se a creado una relacion");
+        }
+    }
     
 }
