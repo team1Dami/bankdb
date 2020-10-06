@@ -76,65 +76,47 @@ public class DAO {
         ArrayList <Account> cuentas = new ArrayList();
         ResultSet resultset = null;
         PreparedStatement preparedStmt = null;
+        Account cuenta = null;
         try{
             this.openConnection();
             
-            
-            //SELECTS
-            System.out.println("Estoy en el select");
-            String select = "select accounts_id from customer_account where customers_id = "+customerId+"";
+            String select = "SELECT a.* from account a, customer_account ca where ca.customers_id = "+customerId+" and ca.accounts_id = a.id;";
             preparedStmt = connection.prepareStatement(select);
             ResultSet resultSet = preparedStmt.executeQuery(select);
-            System.out.println("Estoy buscando");
-            //Variables 
-            ArrayList <Long> ids = new ArrayList();
-            Account cuenta = null;
-            long account_id;
-            System.out.println("Estoy a punto de el while");
-		while(resultSet.next()) {
-                    System.out.println("He entrado en el while");
-                    ids.add(resultSet.getLong("accounts_id"));
-                        System.out.println(resultSet.getLong(1));
-		}
-                System.out.println(ids.get(0)+"    "+ids.get(1));
-                for(int cont = 0; cont<ids.size() ;cont++){
-                    String select2 = "select * from account where id = "+ids.get(cont)+"";
-                    ResultSet resultSet2 = preparedStmt.executeQuery(select2);
-                    while(resultSet2.next()){
-                        cuenta.setAccountId(resultSet2.getLong("id"));
-                        cuenta.setBalance(resultSet2.getFloat("balance"));
-                        cuenta.setBeginBalance(resultSet.getFloat("beginBalance"));
-                        cuenta.setBeginBalanceTimestamp(resultSet2.getTimestamp("beginBalanceTimestamp"));
-                        cuenta.setCreditLine(resultSet2.getDouble("creditLine"));
-                        cuenta.setDescription(resultSet2.getString("description"));
-                        cuenta.setType(resultSet2.getInt("type"));
-                    }
-                    cuentas.add(cuenta);
-                    resultSet2.close();
-                }
-                
-		resultSet.close();
-            
-            this.closeConnection();   
-       }
-       catch(SQLException sqlE){
+            while(resultSet.next()){
+                cuenta.setAccountId(resultSet.getLong("id"));
+                cuenta.setBalance(resultSet.getFloat("balance"));
+                cuenta.setBeginBalance(resultSet.getFloat("beginBalance"));
+                cuenta.setBeginBalanceTimestamp(resultSet.getTimestamp("beginBalanceTimestamp"));
+                cuenta.setCreditLine(resultSet.getDouble("creditLine"));
+                cuenta.setDescription(resultSet.getString("description"));
+                cuenta.setType(resultSet.getInt("type"));
+                cuentas.add(cuenta);
+            }
+            preparedStmt.close();
+            resultSet.close();
+            this.closeConnection(); 
+        }
+            catch(SQLException sqlE){
             System.out.println("Customer can not found or doesn't exist");
-       }
-       catch(Exception e){
-            System.out.println("No se ha podido establecer conexión con la base de datos");
-       }    
-        
-      
+            }
+            catch(Exception e){
+                 System.out.println("No se ha podido establecer conexión con la base de datos");
+            }  
        return cuentas;
     }
    
-   public ArrayList <Movement> getAccountMovemnt(long accountId) throws SQLException{
+   public ArrayList <Movement> getAccountMovemnt(long accountId) throws Exception{
         ArrayList <Movement> movimientos = new ArrayList();
         Movement movimiento = null;
         ResultSet resultset = null;
         PreparedStatement preparedStmt = null;
+        
+        try{
+        this.openConnection();
         String select = "select * from movement where account_id = "+accountId+"";
-        preparedStmt = connection.prepareStatement(select);
+        //preparedStmt = connection.prepareStatement(select);
+        
         ResultSet resultSet = preparedStmt.executeQuery(select);
         while(resultSet.next()){
             movimiento.setAccountId(accountId);
@@ -145,7 +127,12 @@ public class DAO {
             movimiento.setTimestamp(resultSet.getTimestamp("timestamp"));
             movimientos.add(movimiento);
         }
+        resultSet.close();
+        this.closeConnection();
         
+        }catch (SQLException e){
+            
+        }
         return movimientos;
    }
    
