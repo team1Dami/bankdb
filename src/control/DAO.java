@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * @author Saray
@@ -84,6 +85,44 @@ public class DAO {
             System.out.println("DB Connection failed");
        }             
        return ret;
+    }
+    public ArrayList <Account> getCustomerAccount(long customerId){
+        
+        ArrayList <Account> cuentas = new ArrayList();
+                      
+        try{   
+            this.openConnection();
+            
+            String select = "SELECT a.* from account a, customer_account ca where ca.customers_id = "+customerId+" and ca.accounts_id = a.id;";
+            preparedStmt = conn.prepareStatement(select);
+            ResultSet resultSet = null;
+            resultSet = preparedStmt.executeQuery(select);
+             
+            Account aux = new Account();
+                while (resultSet.next()) {
+                aux.setAccountId(resultSet.getLong("id"));
+                aux.setBalance(resultSet.getFloat("balance"));
+                aux.setBeginBalance(resultSet.getFloat("beginBalance"));
+                aux.setBeginBalanceTimestamp(resultSet.getTimestamp("beginBalanceTimestamp"));
+                aux.setCreditLine(resultSet.getDouble("creditLine"));
+                aux.setDescription(resultSet.getString("description"));
+                aux.setType(resultSet.getInt("type"));
+                
+                cuentas.add(aux);             
+            }
+                
+            preparedStmt.close();
+         
+            this.closeConnection();
+        
+        } catch(SQLException sqlE){
+            
+            System.out.println("Customer can not found or doesn't exist");
+            }
+            catch(Exception e){
+                 System.out.println("No se ha podido establecer conexión con la base de datos");
+            }  
+       return cuentas;
     }
    /**
     * 

@@ -9,6 +9,7 @@ import clases.Customer;
 import clases.CustomerAccount;
 import control.Application;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Random;
 
 import utilities.Util;
@@ -22,7 +23,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         int option = 0;
         
@@ -102,6 +103,7 @@ public class Main {
             Long customerId = Util.leerLong("Introduce the id of the customer: ");
             Customer customer = new Customer();
             customer = app.getCustomerData(customerId);
+            
             if(customer.getCustomerId() != 0){
                customer.getCustomerData();
             }
@@ -112,9 +114,20 @@ public class Main {
     /**
         * 
         */
-    private static void consultAccounsOfAClient() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static void consultAccounsOfAClient() throws Exception{
+        Application app = new Application();
+        String c_id;
+        long id;
+        System.out.println("Introduce tu ID: ");
+        c_id=Util.introducirCadena();
+        id=Long.parseLong(c_id);
+        ArrayList <Account> cuentas = new ArrayList<>();
+        cuentas = app.getCustomerAccount(id);
+        for(int cont = 0; cont<cuentas.size(); cont++){
+            cuentas.get(cont).getAccountData();
+        }
     }
+    
 
     /**
      * 

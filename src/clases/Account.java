@@ -27,8 +27,14 @@ public class Account implements Serializable{
     public Account(){
     }
     
-    public void setAccountData(){
-        accountId = 0;
+    public void getAccountData(){
+        System.out.println("Balance: "+balance);
+        System.out.println("Begin Balance: "+beginBalance);
+        System.out.println("Begin Balance timestamp: "+beginBalanceTimestamp);
+        System.out.println("Credit line: "+creditLine);
+        System.out.println("Description: "+description);
+        System.out.println("Type: "+type);
+        System.out.println("----------------------------------------");
     }
     
     
@@ -128,8 +134,6 @@ public class Account implements Serializable{
      */
     public void setType(int type) {
         this.type = type;
-    }
-
-    
+    }    
     
 }

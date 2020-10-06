@@ -8,6 +8,7 @@ package control;
 import clases.Account;
 import clases.Customer;
 import clases.CustomerAccount;
+import java.util.ArrayList;
 
 /**
  * @author Saray
@@ -60,5 +61,16 @@ public class Application {
          boolean blnExistAccount = dbDao.accountExist(accountId);
         return blnExistAccount;
     }
-    
+       /**
+     * Method to obtain Customer data
+     * @param customerId to make the query
+     * @return customer
+     */
+    public ArrayList<Account> getCustomerAccount(long customerId) throws Exception{
+      
+        DAO dbDao = new DAO();
+        ArrayList<Account> ret = dbDao.getCustomerAccount(customerId);
+        return ret; 
+    }
+   
 }
