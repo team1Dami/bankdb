@@ -128,19 +128,31 @@ public class Main {
                 
                 Account newAccount = new Account();
        
-                newAccount.setAccountId(createAccountId());
-                System.out.println(newAccount.getAccountId());
-                newAccount.setBalance(Util.leerFloat("Introduce de balance of the account"));
-                newAccount.setBeginBalance(newAccount.getBalance());
-                java.sql.Timestamp today = java.sql.Timestamp.valueOf(LocalDateTime.now());
-                newAccount.setBeginBalanceTimestamp(today);
-                newAccount.setCreditLine(Util.leerDouble("Introduce the credit line: "));
-                newAccount.setDescription(Util.introducirCadena("Introduce the description: "));
-                newAccount.setType(Util.leerInt("Select 0 (whithout credit) or 1 (whit credit): ", 0, 1));
-               
-                app.setAccount(customerId, newAccount);
+                do {
+                    newAccount.setAccountId(createAccountId());
+                    if(!app.accountExist(newAccount.getAccountId())) {
                 
-                CustomerAccount customerAccount = new CustomerAccount();
+                    newAccount.setBalance(Util.leerFloat("Introduce de balance of the account"));
+                    newAccount.setBeginBalance(newAccount.getBalance());
+                    java.sql.Timestamp today = java.sql.Timestamp.valueOf(LocalDateTime.now());
+                    newAccount.setBeginBalanceTimestamp(today);
+                    newAccount.setCreditLine(Util.leerDouble("Introduce the credit line: "));
+                    newAccount.setDescription(Util.introducirCadena("Introduce the description: "));
+                    newAccount.setType(Util.leerInt("Select 0 (whithout credit) or 1 (whit credit): ", 0, 1));
+
+                    app.setAccount(customerId, newAccount);
+
+                    CustomerAccount customerAccount = new CustomerAccount();
+
+                    customerAccount.setCustomerId(customerId);
+                    customerAccount.setAccountId(newAccount.getAccountId());
+
+                    app.setCustomerAccount(customerAccount);
+
+                     System.out.println("The new account has been created");
+                    }
+                } while (app.accountExist(newAccount.getAccountId()));
+                
             } else {
                  System.out.println("The id of the client doesn't exist");
              }
@@ -159,6 +171,14 @@ public class Main {
         
         accountId = new Random().nextLong();
         
+        String strAccount = accountId.toString();
+        strAccount = strAccount.substring(0, 10);
+        
+        try {
+        accountId = Long.parseLong(strAccount);
+        } catch (Exception e){
+            System.out.println("The account id can not be created");
+        }
         return accountId;
     }
     /**

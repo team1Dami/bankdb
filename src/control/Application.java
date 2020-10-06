@@ -47,5 +47,18 @@ public class Application {
         
         dbDao.setAccount(customerId, account);
     }
+
+    public void setCustomerAccount(CustomerAccount customerAccount) throws Exception{
+        DAO dbDao = new DAO();
+        
+        dbDao.setCustomerAccount(customerAccount);
+    }
+
+    public boolean accountExist(long accountId) throws Exception {
+         DAO dbDao = new DAO();
+         
+         boolean blnExistAccount = dbDao.accountExist(accountId);
+        return blnExistAccount;
+    }
     
 }
