@@ -118,25 +118,28 @@ public class DAO {
        return ret;
     }
     public void createMovement(long accountId) throws Exception{
-        System.out.println("Estoy en el DAO");
         boolean esta=estaIdAccount(accountId);
-        System.out.println("He salido de la funcion");
         if(esta){
             System.out.println("Se ha encontrado la cuenta ");
             Movement ret = new Movement();
             ret.setDatos(accountId);
-            try{
+            boolean existe=estaIdMovement(ret.getMovementId());
+            if(existe){
+                System.out.println("Ese movimiento ya existe");
+            }else{
+                  try{
                  this.openConnection();
 
-                 statement = connection.createStatement();
+                 preparedStmt = connection.prepareStatement("insert into  Movement values (?,?,?,?,?,?)");
 
-                 String select = "insert into  Movement values('"+ret.getMovementId()+"','"+ret.getAmount()+"','"+ret.getBalance()+"','"+ret.getDescription()+"','"+ret.getTimestamp()+"','"+ret.getAccountId()+"')";
-                 ResultSet resultSet = statement.executeQuery(select);
-
-                     while(resultSet.next()) {
-
-                     }
-                     resultSet.close();
+                  preparedStmt.setLong(1, ret.getMovementId());
+                  preparedStmt.setDouble(2, ret.getAmount());
+                  preparedStmt.setDouble(3, ret.getBalance());
+                  preparedStmt.setString(4, ret.getDescription());
+                  preparedStmt.setTimestamp(5, ret.getTimestamp());
+                  preparedStmt.setLong(6, ret.getAccountId());
+                  preparedStmt.executeUpdate();
+                  preparedStmt.close();
 
                  this.closeConnection();   
             }
@@ -145,7 +148,9 @@ public class DAO {
             }
             catch(Exception e){
                  System.out.println("No se ha podido establecer conexión con la base de datos");
-            }    
+            } 
+            }
+             
 
  
         }else{
@@ -155,16 +160,31 @@ public class DAO {
         
     }
     public boolean estaIdAccount(long idAccount) throws Exception{
-        System.out.println("Estoy en la funcion estaIdAccount");
         this.openConnection();
         boolean esta=false;
         statement =  connection.createStatement();
             
-            String select = "select id from account where id is "+idAccount;
+            String select = "select id from account where id = "+idAccount;
             ResultSet resultSet = statement.executeQuery(select);
-            System.out.println("Estoy para entrar en el while");
             while(resultSet.next()) {
                     if(resultSet.getLong(1)==idAccount){
+                        esta = true;
+                        break;
+                    }
+		}
+        
+        this.closeConnection();
+        return esta;
+    }
+       public boolean estaIdMovement(long idMovement) throws Exception{
+        this.openConnection();
+        boolean esta=false;
+        statement =  connection.createStatement();
+            
+            String select = "select id from movement where id = "+idMovement;
+            ResultSet resultSet = statement.executeQuery(select);
+            while(resultSet.next()) {
+                    if(resultSet.getLong(1)==idMovement){
                         esta = true;
                         break;
                     }
