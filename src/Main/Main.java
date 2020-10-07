@@ -6,11 +6,16 @@
 package Main;
 import clases.Account;
 import clases.Customer;
+
+import clases.Movement;
+import javax.xml.transform.Source;
+
 import clases.CustomerAccount;
 import control.Application;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
+
 import utilities.Util;
 
 /**
@@ -130,6 +135,44 @@ public class Main {
     /**
      * 
      */
+
+    private static void consultAccounsOfAClient() throws Exception {
+        Application app = new Application();
+        String c_id;
+        long id;
+        System.out.println("Introduce tu ID: ");
+        c_id=Util.introducirCadena();
+        id=Long.parseLong(c_id);
+        ArrayList <Account> cuentas = new ArrayList<>();
+        cuentas = app.getCustomerAccount(id);
+        for(int cont = 0; cont<cuentas.size(); cont++){
+            System.out.println("\n\n"+(cont+1)+". cuenta de el cliente");
+            cuentas.get(cont).getAccountData();
+        }
+    }
+    /**
+     * 
+     */
+    private static void consultMovementsOfAnAccount() throws Exception {
+        ArrayList<Movement> movimientos = new ArrayList<Movement>();
+        Application app = new Application();
+        long acc_id;
+        String id;
+        //System.out.println("Introduce la ID de la cuenta a buscar: ");
+        acc_id=Util.leerLong("Introduce la ID de la cuenta a buscar: ");
+        movimientos=app.getAccountMovement(acc_id);
+        for(int cont=0; cont< movimientos.size(); cont++){
+            System.out.println("\n\n"+(cont+1)+". Movimiento de la cuenta");
+            System.out.println("ID: "+movimientos.get(cont).getMovementId());
+            System.out.println("Ammount: "+movimientos.get(cont).getAmount());
+            System.out.println("Balance: "+movimientos.get(cont).getBalance());
+            System.out.println("Description: "+movimientos.get(cont).getDescription());
+            System.out.println("Timestamp: "+movimientos.get(cont).getTimestamp());
+            System.out.println("Account ID: "+movimientos.get(cont).getAccountId());
+        }
+        
+    }
+
     private static void createCustomerAccount() {
          Application app = new Application();
        
@@ -174,6 +217,7 @@ public class Main {
         }
     }
     
+
     /**
      * 
      */
@@ -217,9 +261,12 @@ public class Main {
     /**
      * 
      */
+
+
     private static void consultMovementsOfAnAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 
     
     

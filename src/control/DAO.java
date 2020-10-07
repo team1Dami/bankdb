@@ -6,14 +6,21 @@
 package control;
 
 import clases.Account;
-import clases.Customer;
+import clases.Customer;o
+import clases.Movement;
+
 import clases.CustomerAccount;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+
+import java.sql.Statement;
 import java.util.ArrayList;
+import static javafx.beans.binding.Bindings.select;
 
 /**
  * @author Saray
@@ -23,8 +30,11 @@ public class DAO {
     /**
      * Attributes
      */
-    private Connection conn = null;
-    private PreparedStatement preparedStmt = null;
+
+    private Connection connection=null;
+    private Statement statement=null;
+    private PreparedStatement preparedStmt=null;
+   
     
     /**
      * getting the properties file datas
@@ -46,6 +56,7 @@ public class DAO {
       this.passwordDB = this.configFile.getString("DBPass"); 
     }
     */
+
     /**
      * 
      * @param customerId 
@@ -57,7 +68,7 @@ public class DAO {
           
            this.openConnection();         
             String select = "select * from customer where id = "+customerId+"";
-            preparedStmt = conn.prepareStatement(select);
+            preparedStmt = connection.prepareStatement(select);
          
            try (ResultSet resultSet = preparedStmt.executeQuery(select)) {
                
@@ -86,6 +97,7 @@ public class DAO {
        }             
        return ret;
     }
+
     public ArrayList <Account> getCustomerAccount(long customerId){
         
         ArrayList <Account> cuentas = new ArrayList();
@@ -94,22 +106,25 @@ public class DAO {
             this.openConnection();
             
             String select = "SELECT a.* from account a, customer_account ca where ca.customers_id = "+customerId+" and ca.accounts_id = a.id;";
-            preparedStmt = conn.prepareStatement(select);
+
+            preparedStmt = connection.prepareStatement(select);
+
             ResultSet resultSet = null;
             resultSet = preparedStmt.executeQuery(select);
              
             
                 while (resultSet.next()) {
-                    Account aux = new Account();
-                    aux.setAccountId(resultSet.getLong("id"));
-                    aux.setBalance(resultSet.getFloat("balance"));
-                    aux.setBeginBalance(resultSet.getFloat("beginBalance"));
-                    aux.setBeginBalanceTimestamp(resultSet.getTimestamp("beginBalanceTimestamp"));
-                    aux.setCreditLine(resultSet.getDouble("creditLine"));
-                    aux.setDescription(resultSet.getString("description"));
-                    aux.setType(resultSet.getInt("type"));
 
-                    cuentas.add(aux);             
+                  Account aux = new Account();
+                  aux.setAccountId(resultSet.getLong("id"));
+                  aux.setBalance(resultSet.getFloat("balance"));
+                  aux.setBeginBalance(resultSet.getFloat("beginBalance"));
+                  aux.setBeginBalanceTimestamp(resultSet.getTimestamp("beginBalanceTimestamp"));
+                  aux.setCreditLine(resultSet.getDouble("creditLine"));
+                  aux.setDescription(resultSet.getString("description"));
+                  aux.setType(resultSet.getInt("type"));
+                
+                cuentas.add(aux);             
             }
                 
             preparedStmt.close();
@@ -125,20 +140,68 @@ public class DAO {
             }  
        return cuentas;
     }
+   
+   public ArrayList <Movement> getAccountMovemnt(long accountId) throws Exception{
+        ArrayList <Movement> movimientos = new ArrayList();
+        
+        ResultSet resultset = null;
+        PreparedStatement preparedStmt = null;
+        
+        try{
+        this.openConnection();
+        String select = "select * from movement where account_id = "+accountId+"";
+        preparedStmt = connection.prepareStatement(select);
+        
+        ResultSet resultSet = preparedStmt.executeQuery(select);
+        while(resultSet.next()){
+            Movement movimiento = new Movement();
+            movimiento.setAccountId(accountId);
+            movimiento.setAmount(resultSet.getFloat("amount"));
+            movimiento.setBalance(resultSet.getFloat("balance"));
+            movimiento.setDescription(resultSet.getString("description"));
+            movimiento.setMovementId(resultSet.getInt("id"));
+            movimiento.setTimestamp(resultSet.getTimestamp("timestamp"));
+            movimientos.add(movimiento);
+        }
+        //resultSet.close();
+        preparedStmt.close();
+        this.closeConnection();
+        
+        }catch (SQLException e){
+            
+        }
+        return movimientos;
+   }
+   
+   private void openConnection() throws Exception {
+	
+        //Class.forName("com.mysql.cj.jdbc.Driver");
+        String path = "jdbc:mysql://localhost:3306/bankdb";
+	      connection = DriverManager.getConnection(path, "root", "");
+      
+    }
    /**
     * 
     * @param customerId
     * @return true if exist or false if doesn't exist
      * @throws java.lang.Exception
     */
-    public boolean getCustomerId(Long customerId) throws Exception{
+    
    
-       boolean blnExist = false;
+
+   private void closeConnection() throws SQLException {
+	//statement.close();
+	    connection.close();
+   }
+  
+  public boolean getCustomerId(Long customerId) throws Exception{
+       
+    boolean blnExist = false;
        
        try{
            this.openConnection();         
             String select = "select id from customer where id = "+customerId+"";
-            preparedStmt = conn.prepareStatement(select);
+            preparedStmt = connection.prepareStatement(select);
          
            try (ResultSet resultSet = preparedStmt.executeQuery(select)) {
                while (resultSet.next()) {
@@ -162,7 +225,7 @@ public class DAO {
         try{
             this.openConnection(); 
             
-            preparedStmt = conn.prepareStatement("INSERT INTO account VALUES (?,?,?,?,?,?,?)");
+            preparedStmt = connection.prepareStatement("INSERT INTO account VALUES (?,?,?,?,?,?,?)");
             preparedStmt.setLong(1, account.getAccountId());
             preparedStmt.setFloat(2, account.getBalance());
             preparedStmt.setFloat(3, account.getBeginBalance());
@@ -191,7 +254,7 @@ public class DAO {
         try{
             this.openConnection(); 
             
-            preparedStmt = conn.prepareStatement("INSERT INTO customer_account VALUES (?,?)");
+            preparedStmt = connection.prepareStatement("INSERT INTO customer_account VALUES (?,?)");
             preparedStmt.setLong(1, customerAccount.getCustomerId());
             preparedStmt.setFloat(2, customerAccount.getAccountId());
             
@@ -214,7 +277,7 @@ public class DAO {
        
        try {
         Class.forName("com.mysql.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
     
        }
        catch (ClassNotFoundException | SQLException e){
@@ -226,7 +289,7 @@ public class DAO {
      * @throws SQLException 
      */
     private void closeConnection() throws SQLException {  
-	conn.close();     
+	    connection.close();     
     }
 
     boolean accountExist(long accountId) {
@@ -235,7 +298,7 @@ public class DAO {
        try{
            this.openConnection();         
             String select = "select id from account where id = "+accountId+"";
-            preparedStmt = conn.prepareStatement(select);
+            preparedStmt = connection.prepareStatement(select);
          
            try (ResultSet resultSet = preparedStmt.executeQuery(select)) {
                while (resultSet.next()) {

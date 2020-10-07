@@ -121,6 +121,14 @@ public class Account implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
+  
+   /**
+     * @param type the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
+   
 
     /**
      * @return the type
@@ -137,3 +145,4 @@ public class Account implements Serializable{
     }    
     
 }
+
