@@ -31,7 +31,7 @@ public class Application {
         return ret; 
     }
      public void createMovement(long accountId) throws Exception{
-         System.out.println("Estoy en elaplication");
+         System.out.println("Estoy en el aplication");
          DAO dbDao = new DAO();
         dbDao.createMovement(accountId);
      }
