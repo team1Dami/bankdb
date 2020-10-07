@@ -6,13 +6,18 @@
 package control;
 
 import clases.Account;
-import clases.Customer;
+import clases.Customer;o
 import clases.Movement;
+
+import clases.CustomerAccount;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+
 import java.sql.Statement;
 import java.util.ArrayList;
 import static javafx.beans.binding.Bindings.select;
@@ -25,38 +30,62 @@ public class DAO {
     /**
      * Attributes
      */
+
     private Connection connection=null;
     private Statement statement=null;
     private PreparedStatement preparedStmt=null;
-      
+   
+    
+    /**
+     * getting the properties file datas
+    
+        private ResourceBundle configFile;
+        private String driverDB;
+        private String urlDB;
+        private String userDB;
+        private String passwordDB; 
+    /**
+     * 
+     * @throws Exception 
+     
+      public DAO() throws Exception {
+      this.configFile = ResourceBundle.getBundle("control.configFile");
+      this.driverDB = this.configFile.getString("Driver");
+      this.urlDB = this.configFile.getString("Conn");
+      this.userDB = this.configFile.getString("DBUser");
+      this.passwordDB = this.configFile.getString("DBPass"); 
+    }
+    */
+
     /**
      * 
      * @param customerId 
      * @return Customer to consult the datas
      */
    public  Customer getCustomerData(long customerId){
-       Customer ret = new Customer();
+       Customer ret = new Customer();     
        try{
-            this.openConnection();
-            
-            statement = connection.createStatement();
-            
+          
+           this.openConnection();         
             String select = "select * from customer where id = "+customerId+"";
-            ResultSet resultSet = statement.executeQuery(select);
-		
-		while(resultSet.next()) {
-                    ret.setCustomerId(customerId);
-                    ret.setFirstName(resultSet.getString("firstName"));
-                    ret.setLastName(resultSet.getString("lastName"));
-                    ret.setEmail(resultSet.getString("email"));
-                        ret.setCity(resultSet.getString("city"));
-                        ret.setMiddleInitial(resultSet.getString("middleInitial"));
-                        ret.setPhone(resultSet.getLong("phone"));
-                        ret.setState(resultSet.getString("state"));
-                        ret.setStreet(resultSet.getString("street"));
-                        ret.setZip(resultSet.getInt("zip"));
-		}
-		resultSet.close();
+            preparedStmt = connection.prepareStatement(select);
+         
+           try (ResultSet resultSet = preparedStmt.executeQuery(select)) {
+               
+               while(resultSet.next()) {
+                   ret.setCustomerId(customerId);
+                   ret.setFirstName(resultSet.getString("firstName"));
+                   ret.setLastName(resultSet.getString("lastName"));
+                   ret.setEmail(resultSet.getString("email"));
+                   ret.setCity(resultSet.getString("city"));
+                   ret.setMiddleInitial(resultSet.getString("middleInitial"));
+                   ret.setPhone(resultSet.getLong("phone"));
+                   ret.setState(resultSet.getString("state"));
+                   ret.setStreet(resultSet.getString("street"));
+                   ret.setZip(resultSet.getInt("zip"));
+               }
+           }
+                preparedStmt.close();
             
             this.closeConnection();   
        }
@@ -64,34 +93,36 @@ public class DAO {
             System.out.println("Customer can not found or doesn't exist");
        }
        catch(Exception e){
-            System.out.println("No se ha podido establecer conexión con la base de datos");
-       }    
-        
-      
+            System.out.println("DB Connection failed");
+       }             
        return ret;
     }
-   
-   public ArrayList <Account> getCustomerAccount(long customerId){
+
+    public ArrayList <Account> getCustomerAccount(long customerId){
+        
         ArrayList <Account> cuentas = new ArrayList();
                       
         try{   
             this.openConnection();
             
             String select = "SELECT a.* from account a, customer_account ca where ca.customers_id = "+customerId+" and ca.accounts_id = a.id;";
+
             preparedStmt = connection.prepareStatement(select);
+
             ResultSet resultSet = null;
             resultSet = preparedStmt.executeQuery(select);
              
             
                 while (resultSet.next()) {
-                Account aux = new Account();
-                aux.setAccountId(resultSet.getLong("id"));
-                aux.setBalance(resultSet.getFloat("balance"));
-                aux.setBeginBalance(resultSet.getFloat("beginBalance"));
-                aux.setBeginBalanceTimestamp(resultSet.getTimestamp("beginBalanceTimestamp"));
-                aux.setCreditLine(resultSet.getDouble("creditLine"));
-                aux.setDescription(resultSet.getString("description"));
-                aux.setType(resultSet.getInt("type"));
+
+                  Account aux = new Account();
+                  aux.setAccountId(resultSet.getLong("id"));
+                  aux.setBalance(resultSet.getFloat("balance"));
+                  aux.setBeginBalance(resultSet.getFloat("beginBalance"));
+                  aux.setBeginBalanceTimestamp(resultSet.getTimestamp("beginBalanceTimestamp"));
+                  aux.setCreditLine(resultSet.getDouble("creditLine"));
+                  aux.setDescription(resultSet.getString("description"));
+                  aux.setType(resultSet.getInt("type"));
                 
                 cuentas.add(aux);             
             }
@@ -146,14 +177,145 @@ public class DAO {
 	
         //Class.forName("com.mysql.cj.jdbc.Driver");
         String path = "jdbc:mysql://localhost:3306/bankdb";
-	connection = DriverManager.getConnection(path, "root", "");
+	      connection = DriverManager.getConnection(path, "root", "");
       
     }
+   /**
+    * 
+    * @param customerId
+    * @return true if exist or false if doesn't exist
+     * @throws java.lang.Exception
+    */
+    
    
+
    private void closeConnection() throws SQLException {
 	//statement.close();
-	connection.close();
-        
-        System.out.println("Connection has been closed");
+	    connection.close();
+   }
+  
+  public boolean getCustomerId(Long customerId) throws Exception{
+       
+    boolean blnExist = false;
+       
+       try{
+           this.openConnection();         
+            String select = "select id from customer where id = "+customerId+"";
+            preparedStmt = connection.prepareStatement(select);
+         
+           try (ResultSet resultSet = preparedStmt.executeQuery(select)) {
+               while (resultSet.next()) {
+                   if(customerId == resultSet.getLong("id")){
+                       blnExist=true;
+                   }
+               }
+           }
+         preparedStmt.close();
+         
+         this.closeConnection();
+        }catch (SQLException sqlE) {
+            System.out.println("no exist");
+        }
+       
+        return blnExist;
     }
+
+    public void setAccount(Long customerId, Account account) {
+        
+        try{
+            this.openConnection(); 
+            
+            preparedStmt = connection.prepareStatement("INSERT INTO account VALUES (?,?,?,?,?,?,?)");
+            preparedStmt.setLong(1, account.getAccountId());
+            preparedStmt.setFloat(2, account.getBalance());
+            preparedStmt.setFloat(3, account.getBeginBalance());
+            preparedStmt.setTimestamp(4, account.getBeginBalanceTimestamp());
+            preparedStmt.setDouble(5, account.getCreditLine());
+            preparedStmt.setString(6, account.getDescription());
+            preparedStmt.setInt(7, account.getType());
+            
+            preparedStmt.executeUpdate();
+            
+            preparedStmt.close();
+            this.closeConnection();
+         
+        } catch (SQLException sqlE) {
+            System.out.println("insert failed");
+        } catch (Exception e){
+            System.out.println("");
+        }     
+ }
+    /**
+     * 
+     * @param customerAccount 
+     */
+    public void setCustomerAccount(CustomerAccount customerAccount) {       
+       
+        try{
+            this.openConnection(); 
+            
+            preparedStmt = connection.prepareStatement("INSERT INTO customer_account VALUES (?,?)");
+            preparedStmt.setLong(1, customerAccount.getCustomerId());
+            preparedStmt.setFloat(2, customerAccount.getAccountId());
+            
+            preparedStmt.executeUpdate();
+            
+            preparedStmt.close();
+            this.closeConnection();
+         
+        } catch (SQLException sqlE) {
+            System.out.println("insert failed");
+        } catch (Exception e){
+            System.out.println("");
+        }
+    }
+
+     /**
+     * 
+     */
+    private void openConnection()   {
+       
+       try {
+        Class.forName("com.mysql.jdbc.Driver");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankdb", "root", "abcd*1234");
+    
+       }
+       catch (ClassNotFoundException | SQLException e){
+           System.out.println("No Connec");
+       }
+    }
+    /**
+     * 
+     * @throws SQLException 
+     */
+    private void closeConnection() throws SQLException {  
+	    connection.close();     
+    }
+
+    boolean accountExist(long accountId) {
+        boolean blnExist = false;
+       
+       try{
+           this.openConnection();         
+            String select = "select id from account where id = "+accountId+"";
+            preparedStmt = connection.prepareStatement(select);
+         
+           try (ResultSet resultSet = preparedStmt.executeQuery(select)) {
+               while (resultSet.next()) {
+                   if(accountId == resultSet.getLong("id")){
+                       blnExist=true;
+                   }
+               }
+           }
+         preparedStmt.close();
+         
+         this.closeConnection();
+         
+        }catch (SQLException sqlE) {   
+            System.out.println("Exist");
+        }
+       
+        return blnExist;
+    }
+  
 }

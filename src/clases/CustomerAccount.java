@@ -19,6 +19,7 @@ public class CustomerAccount implements Serializable{
     private long accountId;
     
     public CustomerAccount(){
+        
     }
 
     /**

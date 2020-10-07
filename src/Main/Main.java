@@ -6,10 +6,15 @@
 package Main;
 import clases.Account;
 import clases.Customer;
+
 import clases.Movement;
-import control.Application;
-import java.util.ArrayList;
 import javax.xml.transform.Source;
+
+import clases.CustomerAccount;
+import control.Application;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Random;
 
 import utilities.Util;
 
@@ -70,10 +75,10 @@ public class Main {
         int ret = 0;
         
         System.out.println("- - - - - - - M E N U - - - - - - -");
-        System.out.println("1- Create	customer");
+        System.out.println("1- Create customer");
         System.out.println("2- Consult customer data");
         System.out.println("3- Consult accounts of a client");
-        System.out.println("4- Create	customer account");
+        System.out.println("4- Create customer account");
         System.out.println("5- Add customer to account");
         System.out.println("6- Consult details of an account");
         System.out.println("7- Make movement on an account");
@@ -95,23 +100,42 @@ public class Main {
      * 
      */
     private static void consultCustomerData() {
+       
         Application app = new Application();
        
         try {
             Long customerId = Util.leerLong("Introduce the id of the customer: ");
-            System.out.println("Id: "+customerId);
-            Customer customer = app.getCustomerData(customerId);
-            if(customer != null){
+            Customer customer = new Customer();
+            customer = app.getCustomerData(customerId);
+            
+            if(customer.getCustomerId() != 0){
                customer.getCustomerData();
             }
         } catch (Exception e){
             System.out.println("An error has ocurred");
         }
     }
+    /**
+        * 
+        */
+    private static void consultAccounsOfAClient() throws Exception{
+        Application app = new Application();
+        String c_id;
+        long id;
+        System.out.println("Introduce tu ID: ");
+        c_id=Util.introducirCadena();
+        id=Long.parseLong(c_id);
+        ArrayList <Account> cuentas = new ArrayList<>();
+        cuentas = app.getCustomerAccount(id);
+        for(int cont = 0; cont<cuentas.size(); cont++){
+            cuentas.get(cont).getAccountData();
+        }
+    }
 
     /**
      * 
      */
+
     private static void consultAccounsOfAClient() throws Exception {
         Application app = new Application();
         String c_id;
@@ -148,18 +172,76 @@ public class Main {
         }
         
     }
-    /**
-     * 
-     */
+
     private static void createCustomerAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Application app = new Application();
+       
+        try {
+            Long customerId = Util.leerLong("Introduce the id of the customer: ");
+             if(app.getCustomerId(customerId)){  // comprobamos si el cliente existe:
+                
+                Account newAccount = new Account();
+       
+                do {
+                    newAccount.setAccountId(createAccountId());
+                    if(!app.accountExist(newAccount.getAccountId())) {
+                
+                    newAccount.setBalance(Util.leerFloat("Introduce de balance of the account"));
+                    newAccount.setBeginBalance(newAccount.getBalance());
+                    java.sql.Timestamp today = java.sql.Timestamp.valueOf(LocalDateTime.now());
+                    newAccount.setBeginBalanceTimestamp(today);
+                    newAccount.setCreditLine(Util.leerDouble("Introduce the credit line: "));
+                    newAccount.setDescription(Util.introducirCadena("Introduce the description: "));
+                    newAccount.setType(Util.leerInt("Select 0 (whithout credit) or 1 (whit credit): ", 0, 1));
+
+                    app.setAccount(customerId, newAccount);
+
+                    CustomerAccount customerAccount = new CustomerAccount();
+
+                    customerAccount.setCustomerId(customerId);
+                    customerAccount.setAccountId(newAccount.getAccountId());
+
+                    app.setCustomerAccount(customerAccount);
+
+                     System.out.println("The new account has been created");
+                    }
+                } while (app.accountExist(newAccount.getAccountId()));
+                
+            } else {
+                 System.out.println("The id of the client doesn't exist");
+             }
+          
+           
+        } catch (Exception e){
+            System.out.println("An error has ocurred");
+        }
     }
+    
 
     /**
      * 
      */
+    private static long createAccountId() {
+        Long accountId = null;
+        
+        accountId = new Random().nextLong();
+        
+        String strAccount = accountId.toString();
+        strAccount = strAccount.substring(0, 10);
+        
+        try {
+        accountId = Long.parseLong(strAccount);
+        } catch (Exception e){
+            System.out.println("The account id can not be created");
+        }
+        return accountId;
+    }
+    /**
+     * 
+     */
     private static void addCustomerToAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        
     }
 
     /**
@@ -179,6 +261,13 @@ public class Main {
     /**
      * 
      */
+
+
+    private static void consultMovementsOfAnAccount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+
     
     
 }

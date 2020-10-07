@@ -6,7 +6,6 @@
 package clases;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 /**
  * @author Saray
  */
@@ -17,7 +16,7 @@ public class Account implements Serializable{
     private long accountId;
     private float balance;
     private float beginBalance;
-    private Timestamp beginBalanceTimestamp;
+    private java.sql.Timestamp beginBalanceTimestamp;
     private double creditLine;
     private String description;
     private int type;   // standard or credit 
@@ -27,7 +26,18 @@ public class Account implements Serializable{
      */
     public Account(){
     }
-
+    
+    public void getAccountData(){
+        System.out.println("Balance: "+balance);
+        System.out.println("Begin Balance: "+beginBalance);
+        System.out.println("Begin Balance timestamp: "+beginBalanceTimestamp);
+        System.out.println("Credit line: "+creditLine);
+        System.out.println("Description: "+description);
+        System.out.println("Type: "+type);
+        System.out.println("----------------------------------------");
+    }
+    
+    
     /**
      * @return the accountId
      */
@@ -73,14 +83,14 @@ public class Account implements Serializable{
     /**
      * @return the beginBalanceTimestamp
      */
-    public Timestamp getBeginBalanceTimestamp() {
+    public java.sql.Timestamp getBeginBalanceTimestamp() {
         return beginBalanceTimestamp;
     }
 
     /**
      * @param beginBalanceTimestamp the beginBalanceTimestamp to set
      */
-    public void setBeginBalanceTimestamp(Timestamp beginBalanceTimestamp) {
+    public void setBeginBalanceTimestamp(java.sql.Timestamp beginBalanceTimestamp) {
         this.beginBalanceTimestamp = beginBalanceTimestamp;
     }
 
@@ -111,6 +121,14 @@ public class Account implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
+  
+   /**
+     * @param type the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
+   
 
     /**
      * @return the type
@@ -124,16 +142,7 @@ public class Account implements Serializable{
      */
     public void setType(int type) {
         this.type = type;
-    }
-    
-    public void getAccountData(){
-        System.out.println("Balance: "+balance);
-        System.out.println("Begin Balance: "+beginBalance);
-        System.out.println("Begin Balance timestamp: "+beginBalanceTimestamp);
-        System.out.println("Credit line: "+creditLine);
-        System.out.println("Description: "+description);
-        System.out.println("Type: "+type);
-        
-    }
+    }    
     
 }
+
