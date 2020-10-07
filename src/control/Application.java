@@ -33,7 +33,6 @@ public class Application {
      * @return customer
      */
     public ArrayList<Account> getCustomerAccount(long customerId) throws Exception{
-        System.out.println("Estoy en el aplication      "+customerId);
         DAO dbDao = new DAO();
         ArrayList<Account> ret = dbDao.getCustomerAccount(customerId);
         return ret; 

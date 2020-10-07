@@ -122,6 +122,7 @@ public class Main {
         ArrayList <Account> cuentas = new ArrayList<>();
         cuentas = app.getCustomerAccount(id);
         for(int cont = 0; cont<cuentas.size(); cont++){
+            System.out.println("\n\n"+(cont+1)+". cuenta de el cliente");
             cuentas.get(cont).getAccountData();
         }
     }
@@ -133,11 +134,11 @@ public class Main {
         Application app = new Application();
         long acc_id;
         String id;
-        System.out.println("Introduce la ID de la cuenta a buscar: ");
-        id=Util.introducirCadena();
-        acc_id=Long.parseLong(id);
+        //System.out.println("Introduce la ID de la cuenta a buscar: ");
+        acc_id=Util.leerLong("Introduce la ID de la cuenta a buscar: ");
         movimientos=app.getAccountMovement(acc_id);
         for(int cont=0; cont< movimientos.size(); cont++){
+            System.out.println("\n\n"+(cont+1)+". Movimiento de la cuenta");
             System.out.println("ID: "+movimientos.get(cont).getMovementId());
             System.out.println("Ammount: "+movimientos.get(cont).getAmount());
             System.out.println("Balance: "+movimientos.get(cont).getBalance());
