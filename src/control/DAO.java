@@ -98,17 +98,18 @@ public class DAO {
             ResultSet resultSet = null;
             resultSet = preparedStmt.executeQuery(select);
              
-            Account aux = new Account();
+            
                 while (resultSet.next()) {
-                aux.setAccountId(resultSet.getLong("id"));
-                aux.setBalance(resultSet.getFloat("balance"));
-                aux.setBeginBalance(resultSet.getFloat("beginBalance"));
-                aux.setBeginBalanceTimestamp(resultSet.getTimestamp("beginBalanceTimestamp"));
-                aux.setCreditLine(resultSet.getDouble("creditLine"));
-                aux.setDescription(resultSet.getString("description"));
-                aux.setType(resultSet.getInt("type"));
-                
-                cuentas.add(aux);             
+                    Account aux = new Account();
+                    aux.setAccountId(resultSet.getLong("id"));
+                    aux.setBalance(resultSet.getFloat("balance"));
+                    aux.setBeginBalance(resultSet.getFloat("beginBalance"));
+                    aux.setBeginBalanceTimestamp(resultSet.getTimestamp("beginBalanceTimestamp"));
+                    aux.setCreditLine(resultSet.getDouble("creditLine"));
+                    aux.setDescription(resultSet.getString("description"));
+                    aux.setType(resultSet.getInt("type"));
+
+                    cuentas.add(aux);             
             }
                 
             preparedStmt.close();

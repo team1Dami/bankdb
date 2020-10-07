@@ -11,7 +11,6 @@ import control.Application;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
-
 import utilities.Util;
 
 /**
@@ -127,7 +126,6 @@ public class Main {
             cuentas.get(cont).getAccountData();
         }
     }
-    
 
     /**
      * 
