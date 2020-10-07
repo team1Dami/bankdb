@@ -1,12 +1,10 @@
+
 package control;
 
 import clases.Account;
 import clases.Customer;
-
 import clases.Movement;
-
 import clases.CustomerAccount;
-
 import java.util.ArrayList;
 
 /**
@@ -99,6 +97,15 @@ public void setCustomer(Customer cust) throws Exception{
         }
     }
    
-
+ public Account getAccountData(long AccountId) throws Exception{
+        DAO dbDao = new DAO();
+        Account ret = dbDao.getAccountData(AccountId);
+        return ret; 
+    }
+     public void createMovement(long accountId) throws Exception{
+         System.out.println("Estoy en el aplication");
+         DAO dbDao = new DAO();
+        dbDao.createMovement(accountId);
+     }
 }
 

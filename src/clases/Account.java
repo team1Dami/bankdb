@@ -26,6 +26,16 @@ public class Account implements Serializable{
     private String description;
     private int type;   // standard or credit 
     
+    
+    public void getAccountData(){
+        System.out.println("Balance: "+balance);
+        System.out.println("Begin Balance: "+beginBalance);
+        System.out.println("Begin Balance timestamp: "+beginBalanceTimestamp);
+        System.out.println("Credit line: "+creditLine);
+        System.out.println("Description: "+description);
+        System.out.println("Type: "+type);
+        
+    }
     /**
      * Constructor without args
      */

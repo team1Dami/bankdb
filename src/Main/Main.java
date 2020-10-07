@@ -256,21 +256,37 @@ public class Main {
      * 
      */
     private static void consultDetailsOfAnAccounts() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        Application app = new Application();
+        try {
+            Long accountId = Util.leerLong("Introduce the id of the account: ");
+            System.out.println("Id: "+accountId);
+            Account account = app.getAccountData(accountId);
+            if(account != null){
+               account.getAccountData();
+            }
+        } catch (Exception e){
+            System.out.println("An error has ocurred");
+        }
     }
 
-    private static void makeMovementOnAnAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
+     /**
      * 
      */
-
+    private static void makeMovementOnAnAccount() {
+        Application app = new Application();
+        try {
+            Long accountId = Util.leerLong("Introduce the id of the account: ");
+            System.out.println("Id: "+accountId);
+            app.createMovement(accountId);
+ 
+        } catch (Exception e){
+            System.out.println("An error has ocurred");
+        }
+    }
 
     private static void consultMovementsOfAnAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
-
