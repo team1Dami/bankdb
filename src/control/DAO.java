@@ -318,4 +318,82 @@ public class DAO {
         return blnExist;
     }
   
+  public void setCustomerAccount(long customerId, long accountId){
+          PreparedStatement preparedStmt = null;
+        try {
+            this.openConnection();
+           preparedStmt = connection.prepareStatement("INSERT INTO customer_account VALUES (?,?)");
+            preparedStmt.setLong(1, customerId);
+            preparedStmt.setLong(2, accountId);
+            
+            preparedStmt.executeUpdate();
+            
+            preparedStmt.close();
+            
+        this.closeConnection();
+        } catch (SQLException ex) {
+            System.out.println("Insert fallida");
+        } catch (Exception ex) {
+            System.out.println("Conexion fallida");
+        }
+    }    
+  
+      public boolean getAccountId(Long accId){
+        PreparedStatement preparedStmt = null;
+       boolean blnExist = false;
+       
+       try{
+           this.openConnection();         
+            String select = "select id from account where id = "+accId+";";
+            preparedStmt = connection.prepareStatement(select);
+         
+            ResultSet resultSet = preparedStmt.executeQuery(select);
+           
+            while (resultSet.next()) {              
+                if(accId == resultSet.getLong("id")){
+                    System.out.println("El id introducido ya esta registrado");
+                    blnExist=true;
+                }
+            }
+         
+         resultSet.close();
+         preparedStmt.close();
+         
+         this.closeConnection();
+        }catch (SQLException sqlE) {
+            System.out.println("no exist");
+        } catch (Exception ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        return blnExist;
+    }
+   void createCustomer(Customer cus) {
+        PreparedStatement preparedStmt = null;
+        try {
+            this.openConnection();
+            
+            preparedStmt = connection.prepareStatement("INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?,?)");
+            preparedStmt.setLong(1, cus.getCustomerId());
+            preparedStmt.setString(2, cus.getCity());
+            preparedStmt.setString(3, cus.getEmail());
+            preparedStmt.setString(4,cus.getFirstName());
+            preparedStmt.setString(5, cus.getLastName());
+            preparedStmt.setString(6, cus.getMiddleInitial());
+            preparedStmt.setFloat(7, cus.getPhone());
+            preparedStmt.setString(8, cus.getState());
+            preparedStmt.setString(9, cus.getStreet());
+            preparedStmt.setFloat(10, cus.getZip());
+            preparedStmt.executeUpdate();
+            
+            preparedStmt.close();
+            
+        this.closeConnection();
+        } catch (SQLException ex) {
+            System.out.println("Insert fallida");
+        } catch (Exception ex) {
+            System.out.println("Conexion fallida");
+        }
+    }
 }
+

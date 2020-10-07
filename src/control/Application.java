@@ -1,4 +1,3 @@
-
 package control;
 
 import clases.Account;
@@ -81,7 +80,25 @@ public class Application {
         return ret; 
          
      }
-
+public void setCustomer(Customer cust) throws Exception{
+        DAO dbDao = new DAO();
+        boolean esta=dbDao.getCustomerId(cust.getCustomerId());
+        if(!esta)
+        dbDao.createCustomer(cust);
+    }
+    
+    public void setAccountCustomer(long cusId, long accId){
+        DAO dbDao = new DAO();
+        boolean customerId=dbDao.getCustomerId(cusId);
+        boolean accountId=dbDao.getAccountId(accId);
+        if(accountId&&customerId){
+            dbDao.setCustomerAccount(cusId,accId);
+        }
+        else{
+            System.out.println("No se a creado una relacion");
+        }
+    }
    
 
 }
+

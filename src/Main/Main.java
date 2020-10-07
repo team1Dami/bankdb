@@ -90,11 +90,14 @@ public class Main {
         return ret;      
     }
 
-    /**
+     /**
      * 
      */
-    private static void createCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static void createCustomer()throws Exception {
+       Application app=new Application();
+       Customer cust =new Customer();
+       cust.setDatos();
+       app.setCustomer(cust);
     }
     /**
      * 
@@ -115,7 +118,8 @@ public class Main {
             System.out.println("An error has ocurred");
         }
     }
-    /**
+    
+  /**
         * 
         */
     private static void consultAccounsOfAClient() throws Exception{
@@ -215,8 +219,7 @@ public class Main {
         } catch (Exception e){
             System.out.println("An error has ocurred");
         }
-    }
-    
+    }  
 
     /**
      * 
@@ -236,12 +239,17 @@ public class Main {
         }
         return accountId;
     }
-    /**
+      
+  /**
      * 
      */
     private static void addCustomerToAccount() {
-        
-        
+        Application app=new Application();
+        long cusId=0;
+        long accId=0;
+        cusId=Util.leerLong("Customer Id");
+        accId=Util.leerLong("Account Id");
+        app.setAccountCustomer(cusId, accId);
     }
 
     /**
@@ -251,9 +259,6 @@ public class Main {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    /**
-     * 
-     */
     private static void makeMovementOnAnAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -266,8 +271,6 @@ public class Main {
     private static void consultMovementsOfAnAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
-    
     
 }
+
