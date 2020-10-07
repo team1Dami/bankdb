@@ -52,11 +52,19 @@ public class Customer implements Serializable{
      
      }
     public void getCustomerData(){
+        
         System.out.println("Customer Data:");
         System.out.println("Name: "+firstName+" "+lastName);
         System.out.println("Middle Initial: "+middleInitial);
         System.out.println("Phone and Email: "+phone+" "+email);
         System.out.println("Address: "+street+" "+city+" "+zip+" "+state);
+    }
+    
+    /**
+     * Set customer data
+     */
+    public void setCustomerData() {
+        
     }
     
     /**
@@ -197,6 +205,23 @@ public class Customer implements Serializable{
      */
     public void setZip(int zip) {
         this.zip = zip;
+    }
+    
+    public void createCustomer(long id){
+        customerId=id;
+    }
+
+    public void setDatos() {
+        customerId = Util.leerLong("Introduce tu id de cliente: ");
+        firstName = Util.introducirCadena("Introduce tu primer nombre: ");
+        lastName = Util.introducirCadena("Introduce tu ultimo nombre: ");
+        middleInitial= Util.introducirCadena("Introduce tu middleintial: ");
+        street = Util.introducirCadena("Introduce la calle: ");
+        city = Util.introducirCadena("Introduce la ciudad: ");
+        phone = Util.leerLong("Introduce tu telefono ");
+        zip = Util.leerInt("Introduce tu zip");
+        email =Util.introducirCadena("Introduce email");
+         
     }
 
 }

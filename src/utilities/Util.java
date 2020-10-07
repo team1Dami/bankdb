@@ -268,6 +268,24 @@ public class Util {
 		} while (!ok);
 		return fNumero;
 	}
+        public static  double leerDouble(String mensaje) {
+		boolean blnError;
+		double fNumero = 0;
+		
+			System.out.println(mensaje);
+		do {
+			blnError=false;
+			try {
+				fNumero=Double.parseDouble(introducirCadena());
+			}
+			catch(NumberFormatException e) {
+				System.out.println("ERROR. El dato introducido no es num�rico, introduce de nuevo: ");
+				blnError=true;
+			}
+		}while(blnError);
+		
+		return fNumero;
+	}
 	
 	public static boolean esBoolean(){
 		String respu;
