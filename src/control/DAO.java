@@ -126,12 +126,7 @@ public class DAO {
         try {
             this.openConnection();
             
-           /*String insert = "insert into customer values("+cus.getCustomerId()+",'"+cus.getCity()+"','"+cus.getEmail()+
-                            "','"+cus.getFirstName()+"','"+cus.getLastName()+"','"+cus.getMiddleInitial()+"',"+
-                            cus.getPhone()+",'"+cus.getState()+"','"+cus.getStreet()+"',"+
-                            cus.getZip()+")";
-            statement.executeUpdate(insert);*/
-           preparedStmt = conn.prepareStatement("INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?,?)");
+            preparedStmt = conn.prepareStatement("INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?,?)");
             preparedStmt.setLong(1, cus.getCustomerId());
             preparedStmt.setString(2, cus.getCity());
             preparedStmt.setString(3, cus.getEmail());
@@ -189,12 +184,6 @@ public class DAO {
           PreparedStatement preparedStmt = null;
         try {
             this.openConnection();
-            
-           /*String insert = "insert into customer values("+cus.getCustomerId()+",'"+cus.getCity()+"','"+cus.getEmail()+
-                            "','"+cus.getFirstName()+"','"+cus.getLastName()+"','"+cus.getMiddleInitial()+"',"+
-                            cus.getPhone()+",'"+cus.getState()+"','"+cus.getStreet()+"',"+
-                            cus.getZip()+")";
-            statement.executeUpdate(insert);*/
            preparedStmt = conn.prepareStatement("INSERT INTO customer_account VALUES (?,?)");
             preparedStmt.setLong(1, customerId);
             preparedStmt.setLong(2, accountId);
@@ -209,5 +198,5 @@ public class DAO {
         } catch (Exception ex) {
             System.out.println("Conexion fallida");
         }
-    }
+    }    
 }

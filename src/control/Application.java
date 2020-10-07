@@ -5,7 +5,10 @@
  */
 package control;
 
+import clases.Account;
 import clases.Customer;
+import clases.Movement;
+import java.util.ArrayList;
 
 /**
  * @author Saray

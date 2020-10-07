@@ -4,9 +4,12 @@
  * and open the template in the editor.
  */
 package Main;
+import clases.Account;
 import clases.Customer;
+import clases.Movement;
 import control.Application;
 import control.DAO;
+import java.util.ArrayList;
 
 import utilities.Util;
 
@@ -34,7 +37,7 @@ public class Main {
                     consultCustomerData();
                     break;
                 case 3:
-                    //consultAccounsOfAClient();
+                    consultAccounsOfAClient();
                     break;
                 case 4:
                     createCustomerAccount();
@@ -149,6 +152,10 @@ public class Main {
     /**
      * 
      */
+    private static void consultAccounsOfAClient() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     private static void consultMovementsOfAnAccount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
